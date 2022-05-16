@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2547990590185931623}
   - component: {fileID: 5404658240844868403}
   - component: {fileID: 715194782}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy1
   m_TagString: Enemy1
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 2547990590221150196}
   - component: {fileID: 2547990590221150199}
   - component: {fileID: 748184840}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 2547990590497320857}
   - component: {fileID: 2547990590497320856}
   - component: {fileID: 1007840613}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arm 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 2547990590675764644}
   - component: {fileID: 2547990590675764647}
   - component: {fileID: 2547990590675764646}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

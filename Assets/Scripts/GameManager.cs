@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour
     public bool gameActive = false;
     public GameObject seedInput;
     public GameObject titleScreen;
+    public SpawnManager spawnManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour
 		{
             Random.InitState(0);
         }
-        
+        spawnManager.SpawnWave();
         titleScreen.gameObject.SetActive(false);
     }
 
