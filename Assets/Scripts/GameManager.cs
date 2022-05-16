@@ -6,9 +6,8 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public bool gameActive = false;
-    public TextMeshProUGUI seedInput;
+    public GameObject seedInput;
     public GameObject titleScreen;
-    private string seed;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +23,18 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        int seed;
+
         gameActive = true;
-        seed = seedInput.text == "" ? "default" : seedInput.text;
-        Debug.Log(seedInput.text);
+
+        if (int.TryParse(seedInput.GetComponent<TMP_InputField>().text, out seed))
+		{
+            Random.InitState(seed);
+        } else
+		{
+            Random.InitState(0);
+        }
+        
         titleScreen.gameObject.SetActive(false);
     }
 
