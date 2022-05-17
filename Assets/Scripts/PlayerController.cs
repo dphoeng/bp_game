@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 4f;
+    private float speed = 5f;
     public GameObject projectilePrefab;
     private float delay = 0.0f;
     private float delayLimit = 0.25f;
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (delay <= Time.time)
                 {
-                    Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+                    Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation * Quaternion.Euler(0, 180f, 0));
                     delay = Time.time + delayLimit;
                 }
             }
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                speed = 4f;
+                speed = 5f;
             }
             if (transform.position.z < -17.5f)
                 transform.position = new Vector3(transform.position.x, transform.position.y, -17.5f);

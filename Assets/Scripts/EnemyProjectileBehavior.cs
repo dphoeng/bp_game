@@ -2,25 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyProjectileBehavior : MonoBehaviour
+public class EnemyProjectileBehavior : ProjectileGeneral
 {
-    public float speed = 6f;
-    private GameManager gameManager;
-
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        speed = 6f;
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        transform.Translate(Vector3.back * Time.deltaTime * speed);
-        if (transform.position.z < -25)
-        {
-            Destroy(gameObject);
-        }
+        base.Update();
     }
 
     private void OnTriggerEnter(Collider other)

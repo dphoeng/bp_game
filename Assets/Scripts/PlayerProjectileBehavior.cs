@@ -2,32 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerProjectileBehavior : MonoBehaviour
+public class PlayerProjectileBehavior : ProjectileGeneral
 {
-    public float speed = 8f;
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        speed = 8f;
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * speed);
-        if (transform.position.z > 5)
-        {
-            Destroy(gameObject);
-        }
+        base.Update();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         
-        if (other.transform.root.CompareTag("Enemy1"))
+        if (other.transform.root.CompareTag("Enemy"))
         {
             Destroy(gameObject);
-            other.transform.root.gameObject.GetComponent<EnemyBehavior>().takeDamage(1);
+            other.transform.root.gameObject.GetComponent<EnemyGeneral>().takeDamage(1);
+            // TODO: Score count
         }
     }
 }
