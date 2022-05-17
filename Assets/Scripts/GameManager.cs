@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -8,12 +10,17 @@ public class GameManager : MonoBehaviour
     public bool gameActive = false;
     public GameObject seedInput;
     public GameObject titleScreen;
+    public GameObject gameOverScreen;
+    public Button startButton;
+    public Button restartButton;
     public SpawnManager spawnManager;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        startButton.onClick.AddListener(StartGame);
+        restartButton.onClick.AddListener(RestartGame);
     }
 
     // Update is called once per frame
@@ -42,7 +49,11 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         gameActive = false;
-        // TODO: game over screen
-        //       destroy all objects on screen
+        gameOverScreen.gameObject.SetActive(true);
+        // TODO: destroy all objects on screen?
     }
+    public void RestartGame()
+	{
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
 }
