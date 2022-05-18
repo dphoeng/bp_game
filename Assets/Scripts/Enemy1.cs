@@ -11,11 +11,14 @@ public class Enemy1 : EnemyGeneral
     {
         hitpoints = 2f;
         speed = 2f;
+        scoreAtKill = 300;
         shootInterval = 0.75f;
         rotation = new Vector3(0, 0, 0.5f);
         projectilePrefab = assignedProjectilePrefab;
         base.Start();
     }
+    
+    // Update is called once per frame
     protected override void Update()
     {
         if (delay <= Time.time && transform.position.z < 0)

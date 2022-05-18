@@ -9,9 +9,9 @@ public class Enemy2 : EnemyGeneral
     // Start is called before the first frame update
     protected override void Start()
     {
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         hitpoints = 4f;
         speed = 1f;
+        scoreAtKill = 100;
         shootInterval = 0.25f;
         rotation = new Vector3(0, 0.25f, 0);
         projectilePrefab = assignedProjectilePrefab;
@@ -29,5 +29,4 @@ public class Enemy2 : EnemyGeneral
         }
         base.Update();
     }
-
 }

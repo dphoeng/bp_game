@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public Button startButton;
     public Button restartButton;
     public SpawnManager spawnManager;
+    public TextMeshProUGUI scoreText;
+    private int score;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,8 @@ public class GameManager : MonoBehaviour
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         startButton.onClick.AddListener(StartGame);
         restartButton.onClick.AddListener(RestartGame);
+        score = 0;
+        scoreText.text = "0";
     }
 
     // Update is called once per frame
@@ -52,6 +56,14 @@ public class GameManager : MonoBehaviour
         gameOverScreen.gameObject.SetActive(true);
         // TODO: destroy all objects on screen?
     }
+
+    public void addScore(int scoreToAdd)
+	{
+        score += scoreToAdd;
+        scoreText.text = score + "";
+
+    }
+
     public void RestartGame()
 	{
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

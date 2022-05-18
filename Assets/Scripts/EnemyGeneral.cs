@@ -7,6 +7,7 @@ public class EnemyGeneral : MonoBehaviour
     protected float hitpoints;
     protected float speed;
     protected float shootInterval;
+    protected int scoreAtKill;
     protected float delay = 0.0f;
     protected Vector3 rotation;
     protected GameObject projectilePrefab;
@@ -49,6 +50,7 @@ public class EnemyGeneral : MonoBehaviour
         if (hitpoints <= 0)
         {
             Destroy(gameObject);
+            gameManager.addScore(100);
         }
     }
 }
