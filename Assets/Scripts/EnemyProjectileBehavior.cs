@@ -21,9 +21,13 @@ public class EnemyProjectileBehavior : ProjectileGeneral
     {
         if (other.CompareTag("Player"))
         {
-            Destroy(other.gameObject.transform.parent.gameObject);
-            gameManager.GameOver();
-            // TODO: lives
+            Destroy(gameObject);
+            gameManager.LoseLive();
+            if (gameManager.GetLives() < 0)
+            {
+                Destroy(other.gameObject.transform.parent.gameObject);
+            }
+            // TODO: When hit, lose some xp + drop some of that on the field
         }
     }
 }

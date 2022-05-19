@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (gameManager.GetBombCount() > 0)
 					{
-                        Instantiate(clearRingPrefab, transform.position, transform.rotation);
+                        Nuke();
                         gameManager.AddBomb(-1);
                         ringDelay = Time.time + ringDelayLimit;
 					} else
@@ -73,5 +73,10 @@ public class PlayerController : MonoBehaviour
                 transform.position = new Vector3(-7.5f, transform.position.y, transform.position.z);
 
         }
+    }
+
+    public void Nuke()
+    {
+        Instantiate(clearRingPrefab, transform.position, transform.rotation);
     }
 }

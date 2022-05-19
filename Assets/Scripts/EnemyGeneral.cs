@@ -35,8 +35,12 @@ public class EnemyGeneral : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Destroy(other.gameObject.transform.parent.gameObject);
-            gameManager.GameOver();
+            Destroy(gameObject);
+            gameManager.LoseLive();
+            if (gameManager.GetLives() < 0)
+            {
+                Destroy(other.gameObject.transform.parent.gameObject);
+            }
         }
     }
 
@@ -50,6 +54,9 @@ public class EnemyGeneral : MonoBehaviour
         hitpoints -= damage;
         if (hitpoints <= 0)
         {
+            // TODO: Add bomb drop
+            //       Add more xp drops depending on enemy killed
+            //       Change the behavior of spawning the drops (around the killed enemy)
             Instantiate(experiencePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             Destroy(gameObject);
             gameManager.AddScore(scoreAtKill);

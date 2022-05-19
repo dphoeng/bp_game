@@ -12,12 +12,16 @@ public class GameManager : MonoBehaviour
     public GameObject titleScreen;
     public GameObject gameOverScreen;
     public GameObject scoreScreen;
+    public PlayerController player;
     public Button startButton;
     public Button restartButton;
     public SpawnManager spawnManager;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI bombText;
+    public TextMeshProUGUI livesText;
+    public Image maskLevel;
+    public Image maskBomb;
     private int score;
     private float scoreInterval = 1f;
     private float delay;
@@ -25,11 +29,13 @@ public class GameManager : MonoBehaviour
     private int level;
     private float bombProgress;
     private int bombCount;
+    private int lives;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
         startButton.onClick.AddListener(StartGame);
         restartButton.onClick.AddListener(RestartGame);
         score = 0;
@@ -37,9 +43,13 @@ public class GameManager : MonoBehaviour
         level = 1;
         bombProgress = 0;
         bombCount = 2;
+        lives = 2;
         scoreText.text = "Score<br>0";
-        levelText.text = "Level<br>1 - 0%";
-        bombText.text = "Bombs<br>2 - 0%";
+        levelText.text = "Lvl. 1";
+        bombText.text = bombCount + "";
+        livesText.text = lives + "";
+        maskLevel.fillAmount = 0;
+        maskBomb.fillAmount = 0;
     }
 
     // Update is called once per frame
@@ -87,6 +97,7 @@ public class GameManager : MonoBehaviour
         score += scoreToAdd;
         scoreText.text = "Score<br>" + score;
     }
+
     public void AddXp(float xpToAdd)
     {
         experience += xpToAdd;
@@ -95,8 +106,10 @@ public class GameManager : MonoBehaviour
             experience -= 100f;
             LevelUp();
         }
-        levelText.text = "Level<br>" + level + " - " + experience + "%";
+        levelText.text = "Lvl. " + level;
+        maskLevel.fillAmount = experience / 100f;
     }
+
     public void AddBombPrg(float vToAdd)
     {
         bombProgress += vToAdd;
@@ -105,14 +118,38 @@ public class GameManager : MonoBehaviour
             bombProgress -= 100f;
             AddBomb(1);
         }
-        levelText.text = "Level<br>" + level + " - " + experience + "%";
+        bombText.text = bombCount + "";
+    }
+
+    public void AddLives(int livesToAdd)
+    {
+        lives += livesToAdd;
+        livesText.text = lives + "";
+    }
+
+    public void LoseLive()
+    {
+        AddLives(-1);
+        if (lives < 0)
+        {
+            GameOver();
+            livesText.text = "U ded bro";
+        } else
+        {
+            player.Nuke();
+        }
+    }
+
+    public int GetLives()
+    {
+        return lives;
     }
 
     public void AddBomb(int count)
 	{
         bombCount += count;
-        bombText.text = "Bombs<br>" + bombCount + " - " + bombProgress + "%";
-	}
+        bombText.text = bombCount + "";
+    }
 
     public void NoBombs()
 	{

@@ -25,7 +25,7 @@ public class SpawnManager : MonoBehaviour
             {
                 if (Random.Range(0, spawnInterval) == 1)
                 {
-                    Instantiate(testPrefab[Random.Range(0, testPrefab.Count)], new Vector3(Random.Range(-7, 7), 5, 5), transform.rotation);
+                    Instantiate(testPrefab[Random.Range(0, testPrefab.Count)], new Vector3(Random.Range(-7f, 7f), 5, 5), transform.rotation);
                     delay = Time.time + spawnIntervalMin;
                 }
             }
