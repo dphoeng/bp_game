@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy1 : EnemyGeneral
 {
     public GameObject assignedProjectilePrefab;
+    public GameObject assignedExperiencePrefab;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -12,9 +13,10 @@ public class Enemy1 : EnemyGeneral
         hitpoints = 2f;
         speed = 2f;
         scoreAtKill = 300;
-        shootInterval = 0.75f;
+        shootInterval = 0.5f;
         rotation = new Vector3(0, 0, 0.5f);
         projectilePrefab = assignedProjectilePrefab;
+        experiencePrefab = assignedExperiencePrefab;
         base.Start();
     }
     

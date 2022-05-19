@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assignedProjectilePrefab: {fileID: 8433911163296676777, guid: 673951762aea935468a12d641e982022, type: 3}
+  assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
 --- !u!1 &2547990590221150200
 GameObject:
   m_ObjectHideFlags: 0

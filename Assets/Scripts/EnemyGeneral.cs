@@ -10,6 +10,7 @@ public class EnemyGeneral : MonoBehaviour
     protected int scoreAtKill;
     protected float delay = 0.0f;
     protected Vector3 rotation;
+    protected GameObject experiencePrefab;
     protected GameObject projectilePrefab;
     protected GameManager gameManager;
 
@@ -24,7 +25,7 @@ public class EnemyGeneral : MonoBehaviour
     {
         transform.Rotate(rotation);
         transform.Translate(Vector3.back * speed * Time.deltaTime, Space.World);
-        if (transform.position.z < -25)
+        if (transform.position.z < -20)
         {
             Destroy(gameObject);
         }
@@ -49,8 +50,9 @@ public class EnemyGeneral : MonoBehaviour
         hitpoints -= damage;
         if (hitpoints <= 0)
         {
+            Instantiate(experiencePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             Destroy(gameObject);
-            gameManager.addScore(100);
+            gameManager.AddScore(scoreAtKill);
         }
     }
 }

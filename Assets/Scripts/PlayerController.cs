@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private float speed = 5f;
-    public GameObject projectilePrefab;
     private float delay = 0.0f;
     private float delayLimit = 0.25f;
+    private float ringDelay = 0.0f;
+    private float ringDelayLimit = 1f;
     private GameManager gameManager;
+    public GameObject projectilePrefab;
+    public GameObject clearRingPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +47,21 @@ public class PlayerController : MonoBehaviour
             else
             {
                 speed = 5f;
+            }
+            if (Input.GetKey("x"))
+            { 
+                if (ringDelay <= Time.time)
+                {
+                    if (gameManager.GetBombCount() > 0)
+					{
+                        Instantiate(clearRingPrefab, transform.position, transform.rotation);
+                        gameManager.AddBomb(-1);
+                        ringDelay = Time.time + ringDelayLimit;
+					} else
+					{
+                        gameManager.NoBombs();
+					}
+                }
             }
             if (transform.position.z < -17.5f)
                 transform.position = new Vector3(transform.position.x, transform.position.y, -17.5f);

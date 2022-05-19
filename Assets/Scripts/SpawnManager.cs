@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
 {
     private GameManager gameManager;
     public List<GameObject> testPrefab;
-    private int spawnInterval = 150;
+    private int spawnInterval = 450;
     private float spawnIntervalMin = 0f;
     private float delay = 0.0f;
 
