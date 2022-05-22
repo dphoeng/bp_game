@@ -22,8 +22,8 @@ public class EnemyProjectileBehavior : ProjectileGeneral
         if (other.CompareTag("Player"))
         {
             Destroy(gameObject);
-            gameManager.LoseLive();
-            if (gameManager.GetLives() < 0)
+            gameManager.playerStats.LoseLive();
+            if (gameManager.playerStats.Lives < 0)
             {
                 Destroy(other.gameObject.transform.parent.gameObject);
             }

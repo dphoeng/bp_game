@@ -8,11 +8,17 @@ public class EnemyGeneral : MonoBehaviour
     protected float speed;
     protected float shootInterval;
     protected int scoreAtKill;
+    protected int xpAtKill;
+    protected int bombAtKill;
     protected float delay = 0.0f;
     protected Vector3 rotation;
     protected GameObject experiencePrefab;
+    protected GameObject bombPrefab;
     protected GameObject projectilePrefab;
     protected GameManager gameManager;
+    public int lastFrame = 0;
+
+    // TODO: Boss enemy?
 
     // Start is called before the first frame update, after child object's start
     protected virtual void Start()
@@ -36,8 +42,8 @@ public class EnemyGeneral : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Destroy(gameObject);
-            gameManager.LoseLive();
-            if (gameManager.GetLives() < 0)
+            gameManager.playerStats.LoseLive();
+            if (gameManager.playerStats.Lives < 0)
             {
                 Destroy(other.gameObject.transform.parent.gameObject);
             }
@@ -49,17 +55,30 @@ public class EnemyGeneral : MonoBehaviour
         return hitpoints;
     }
 
-    public void takeDamage(float damage)
+    public void takeDamage(float damage, int frame)
     {
-        hitpoints -= damage;
-        if (hitpoints <= 0)
+        if (frame != lastFrame)
         {
-            // TODO: Add bomb drop
-            //       Add more xp drops depending on enemy killed
-            //       Change the behavior of spawning the drops (around the killed enemy)
-            Instantiate(experiencePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-            Destroy(gameObject);
-            gameManager.AddScore(scoreAtKill);
+            lastFrame = frame;
+            hitpoints -= damage;
+            if (hitpoints <= 0)
+            {
+                for (int i = 0; i < xpAtKill; i++)
+                {
+                    Vector3 newPos = transform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                    newPos.x = Mathf.Min(8, Mathf.Max(-8, newPos.x));
+                    Instantiate(experiencePrefab, newPos, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
+
+                for (int i = 0; i < bombAtKill; i++)
+                {
+                    Vector3 newPos = transform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                    newPos.x = Mathf.Min(8, Mathf.Max(-8, newPos.x));
+                    Instantiate(bombPrefab, newPos, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
+                Destroy(gameObject);
+                gameManager.playerStats.AddScore(scoreAtKill);
+            }
         }
     }
 }

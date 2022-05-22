@@ -12,44 +12,49 @@ public class GameManager : MonoBehaviour
     public GameObject titleScreen;
     public GameObject gameOverScreen;
     public GameObject scoreScreen;
+    public GameObject debugScreen;
+    public GameObject livesPrefab;
+    public List<GameObject> livesList = new List<GameObject>();
     public PlayerController player;
+    public PlayerStats playerStats;
     public Button startButton;
     public Button restartButton;
     public SpawnManager spawnManager;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI bombText;
-    public TextMeshProUGUI livesText;
+    public TextMeshProUGUI seedText;
+    public GameObject livesParent;
     public Image maskLevel;
     public Image maskBomb;
-    private int score;
+    private float delay = 0;
     private float scoreInterval = 1f;
-    private float delay;
-    private float experience;
-    private int level;
-    private float bombProgress;
-    private int bombCount;
-    private int lives;
+
+    // TODO LIST
+    //      Add more level guns: 3
+    //      Add more enemies: 3
+    //      Add boss: 0
+    //      Scaling level requirement?
 
     // Start is called before the first frame update
     void Start()
     {
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
+        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
         startButton.onClick.AddListener(StartGame);
         restartButton.onClick.AddListener(RestartGame);
-        score = 0;
-        experience = 0;
-        level = 1;
-        bombProgress = 0;
-        bombCount = 2;
-        lives = 2;
+
         scoreText.text = "Score<br>0";
         levelText.text = "Lvl. 1";
-        bombText.text = bombCount + "";
-        livesText.text = lives + "";
+        bombText.text = playerStats.BombCount + "";
+        livesList.Add(Instantiate(livesPrefab, new Vector3(12.5f, -12.5f, 0), transform.rotation));
+        livesList.Add(Instantiate(livesPrefab, new Vector3(38.75f, -12.5f, 0), transform.rotation));
+        livesList[0].transform.SetParent(livesParent.transform, false);
+        livesList[1].transform.SetParent(livesParent.transform, false);
         maskLevel.fillAmount = 0;
         maskBomb.fillAmount = 0;
+        debugScreen.SetActive(false);
     }
 
     // Update is called once per frame
@@ -59,7 +64,7 @@ public class GameManager : MonoBehaviour
         {
             if (delay <= Time.time)
             {
-                AddScore(10);
+                playerStats.AddScore(10);
                 delay = scoreInterval + Time.time;
             }
         }
@@ -77,13 +82,16 @@ public class GameManager : MonoBehaviour
         if (int.TryParse(seedInput.GetComponent<TMP_InputField>().text, out int seed))
 		{
             Random.InitState(seed);
-        } else
-		{
-            Random.InitState(0);
+            seedText.text = "Seed<br>" + seed;
         }
-        // spawnManager.SpawnWave();
-        titleScreen.gameObject.SetActive(false);
-        scoreScreen.gameObject.SetActive(true);
+        else
+        {
+            Random.InitState(0);
+            seedText.text = "Seed<br>0";
+        }
+        spawnManager.startSpawn();
+        titleScreen.SetActive(false);
+        scoreScreen.SetActive(true);
     }
 
     public void GameOver()
@@ -92,78 +100,21 @@ public class GameManager : MonoBehaviour
         gameOverScreen.gameObject.SetActive(true);
     }
 
-    public void AddScore(int scoreToAdd)    
-	{
-        score += scoreToAdd;
-        scoreText.text = "Score<br>" + score;
-    }
-
-    public void AddXp(float xpToAdd)
+    public IEnumerator FlashPlayer()
     {
-        experience += xpToAdd;
-        if (experience >= 100f)
+        for (int i = 0; i < 6; i++)
         {
-            experience -= 100f;
-            LevelUp();
+            if (i % 2 == 0)
+            {
+                player.GetComponent<MeshRenderer>().enabled = false;
+                yield return new WaitForSeconds(0.2f);
+            }
+            else
+            {
+                player.GetComponent<MeshRenderer>().enabled = true;
+                yield return new WaitForSeconds(0.4f);
+            }
         }
-        levelText.text = "Lvl. " + level;
-        maskLevel.fillAmount = experience / 100f;
-    }
-
-    public void AddBombPrg(float vToAdd)
-    {
-        bombProgress += vToAdd;
-        if (bombProgress >= 100f)
-        {
-            bombProgress -= 100f;
-            AddBomb(1);
-        }
-        bombText.text = bombCount + "";
-    }
-
-    public void AddLives(int livesToAdd)
-    {
-        lives += livesToAdd;
-        livesText.text = lives + "";
-    }
-
-    public void LoseLive()
-    {
-        AddLives(-1);
-        if (lives < 0)
-        {
-            GameOver();
-            livesText.text = "U ded bro";
-        } else
-        {
-            player.Nuke();
-        }
-    }
-
-    public int GetLives()
-    {
-        return lives;
-    }
-
-    public void AddBomb(int count)
-	{
-        bombCount += count;
-        bombText.text = bombCount + "";
-    }
-
-    public void NoBombs()
-	{
-        bombText.color = Color.red;
-	}
-
-    public int GetBombCount()
-    {
-        return bombCount;
-    }
-
-    private void LevelUp()
-    {
-        level += 1;
     }
 
     public void RestartGame()

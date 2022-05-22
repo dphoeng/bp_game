@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerProjectileBehavior : ProjectileGeneral
 {
+    private PlayerController player;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         speed = 8f;
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
         base.Start();
     }
 
@@ -23,8 +26,7 @@ public class PlayerProjectileBehavior : ProjectileGeneral
         if (other.transform.root.CompareTag("Enemy"))
         {
             Destroy(gameObject);
-            other.transform.root.gameObject.GetComponent<EnemyGeneral>().takeDamage(1);
-            // TODO: Score count
+            other.transform.root.gameObject.GetComponent<EnemyGeneral>().takeDamage(gameManager.playerStats.Strength, Time.frameCount);
         }
     }
 }

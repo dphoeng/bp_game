@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     private float speed = 5f;
     private float delay = 0.0f;
-    private float delayLimit = 0.25f;
     private float ringDelay = 0.0f;
     private float ringDelayLimit = 1f;
     private GameManager gameManager;
@@ -22,24 +21,42 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // enable debug screen
+        if (Input.GetKey("y"))
+        {
+            if (Input.GetKey("u"))
+            {
+                if (Input.GetKey("h"))
+                    gameManager.debugScreen.SetActive(true);
+            }
+        }
+
         if (gameManager.gameActive)
         {
-            if (Input.GetKey("up"))
-                transform.Translate(Vector3.forward * speed * Time.deltaTime);
-            if (Input.GetKey("down"))
-                transform.Translate(Vector3.back * speed * Time.deltaTime);
-            if (Input.GetKey("left"))
-                transform.Translate(Vector3.left * speed * Time.deltaTime);
-            if (Input.GetKey("right"))
-                transform.Translate(Vector3.right * speed * Time.deltaTime);
+            transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * speed * Time.deltaTime);
+
+            // Shoot projectiles
             if (Input.GetKey("space"))
             {
                 if (delay <= Time.time)
                 {
-                    Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation * Quaternion.Euler(0, 180f, 0));
-                    delay = Time.time + delayLimit;
+                    if (gameManager.playerStats.Level < 4)
+                        Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation * Quaternion.Euler(0, 180f, 0));
+                    else if (gameManager.playerStats.Level < 8)
+                    {
+                        Instantiate(projectilePrefab, transform.position + new Vector3(0.3f, 0, 0), projectilePrefab.transform.rotation * Quaternion.Euler(0, 180f, 0));
+                        Instantiate(projectilePrefab, transform.position + new Vector3(-0.3f, 0, 0), projectilePrefab.transform.rotation * Quaternion.Euler(0, 180f, 0));
+                    } else
+                    {
+                        Instantiate(projectilePrefab, transform.position + new Vector3(0.3f, 0, 0), projectilePrefab.transform.rotation * Quaternion.Euler(0, 195f, 0));
+                        Instantiate(projectilePrefab, transform.position + new Vector3(0, 0, 0), projectilePrefab.transform.rotation * Quaternion.Euler(0, 180f, 0));
+                        Instantiate(projectilePrefab, transform.position + new Vector3(-0.3f, 0, 0), projectilePrefab.transform.rotation * Quaternion.Euler(0, 165f, 0));
+                    }
+                    delay = Time.time + gameManager.playerStats.AttackSpeed;
                 }
             }
+
+            // Slow player down for more control and precise movement
             if (Input.GetKey("left shift"))
             {
                 speed = 2f;
@@ -48,21 +65,25 @@ public class PlayerController : MonoBehaviour
             {
                 speed = 5f;
             }
+
+            // Spawn nuke
             if (Input.GetKey("x"))
             { 
                 if (ringDelay <= Time.time)
                 {
-                    if (gameManager.GetBombCount() > 0)
+                    if (gameManager.playerStats.BombCount > 0)
 					{
                         Nuke();
-                        gameManager.AddBomb(-1);
+                        gameManager.playerStats.AddBomb(-1);
                         ringDelay = Time.time + ringDelayLimit;
 					} else
 					{
-                        gameManager.NoBombs();
+                        gameManager.playerStats.NoBombs();
 					}
                 }
             }
+
+            // Border control
             if (transform.position.z < -17.5f)
                 transform.position = new Vector3(transform.position.x, transform.position.y, -17.5f);
             if (transform.position.z > -2.5f)
