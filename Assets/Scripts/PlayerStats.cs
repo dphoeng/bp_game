@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerStats : MonoBehaviour
 {
     private GameManager gameManager;
     public int Score {get; set;}
     public float Experience { get; set; }
+    public float RequiredExperience { get; set; }
     public float TotalLevel { get; set; }
     public int Level { get; set; }
     public float BombProgress { get; set; }
     public int BombCount { get; set; }
     public int Lives { get; set; }
-    public float Strength { get; set; }
     public float AttackSpeed { get; set; }
+
+    // DEBUG
+    public TextMeshProUGUI requiredXpText;
 
     // Start is called before the first frame update
     void Start()
@@ -21,12 +25,13 @@ public class PlayerStats : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         Score = 0;
         Experience = 0;
+        RequiredExperience = 60f;
+        requiredXpText.text = "Required Xp<br>" + RequiredExperience;
         TotalLevel = 0;
         Level = 1;
         BombProgress = 0;
         BombCount = 2;
         Lives = 2;
-        Strength = 1;
         AttackSpeed = 0.4f;
     }
 
@@ -45,20 +50,22 @@ public class PlayerStats : MonoBehaviour
     public void AddXp(float xpToAdd)
     {
         Experience += xpToAdd;
-        if (Experience >= 100f)
+        if (Experience >= RequiredExperience)
         {
-            Experience -= 100f;
+            Experience -= RequiredExperience;
             LevelUp();
         }
         gameManager.levelText.text = "Lvl. " + Level;
-        gameManager.maskLevel.fillAmount = Experience / 100f;
+        gameManager.maskLevel.fillAmount = Experience / RequiredExperience;
     }
 
     private void LevelUp()
     {
+        RequiredExperience += Level * 4;
         Level += 1;
         TotalLevel += 1;
-        Strength += 0.1f;
+
+        requiredXpText.text = "Required Xp<br>" + RequiredExperience;
         
         if (AttackSpeed > 0.1f)
             AttackSpeed -= 0.0075f;    
@@ -68,7 +75,7 @@ public class PlayerStats : MonoBehaviour
         {
             AddLives(1);
         }
-        // TODO: New player projectile or stronger on level up
+        gameManager.maskLevel.fillAmount = Experience / RequiredExperience;
     }
 
     public void AddBombPrg(float vToAdd)

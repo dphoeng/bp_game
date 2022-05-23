@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     private GameManager gameManager;
     public List<GameObject> enemyPrefabs;
     private float spawnInterval;
-    private float spawnIntervalMin = 0f;
+    private float spawnIntervalMin = 1f;
     private float spawnIntervalMinInc = 1f;
     private float startTime;
     private float delay = 0.0f;
@@ -25,7 +25,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         startTime = 0;
-        spawnInterval = 1200;
+        spawnInterval = 900;
         enemySpawn = 0;
         x = 0;
         enemyPastTime = new List<bool> { false, false };
@@ -38,17 +38,24 @@ public class SpawnManager : MonoBehaviour
         if (gameManager.gameActive)
         {
             float timePast = Time.time - startTime;
-            intervalText.text = "spawnInterval<br>" + spawnInterval;
-            if (delayInc <= Time.time)
+			intervalText.text = "spawnInterval<br>" + spawnInterval + "<br><br>spawnIntervalMin<br>" + spawnIntervalMin + "<br><br>timePast<br>" + timePast;
+			if (delayInc <= Time.time)
             {
-                if (spawnInterval > 300)
+                if (spawnInterval > 200)
                 {
-                    spawnInterval += -0.0002f * Mathf.Pow(x, 2) - 4;
+                    spawnInterval += -0.0002f * Mathf.Pow(x, 2) - 2;
                     x++;
                 }
                 else
                 {
-                    spawnInterval = 300;
+                    spawnInterval = 200;
+                }
+                if (spawnIntervalMin > 0.1f)
+				{
+                    spawnIntervalMin -= 0.003f;
+				} else
+				{
+                    spawnIntervalMin -= 0.1f;
                 }
                 delayInc = Time.time + spawnIntervalMinInc;
             }

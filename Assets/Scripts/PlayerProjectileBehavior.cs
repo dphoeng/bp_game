@@ -26,7 +26,7 @@ public class PlayerProjectileBehavior : ProjectileGeneral
         if (other.transform.root.CompareTag("Enemy"))
         {
             Destroy(gameObject);
-            other.transform.root.gameObject.GetComponent<EnemyGeneral>().takeDamage(gameManager.playerStats.Strength, Time.frameCount);
+            other.transform.root.gameObject.GetComponent<EnemyGeneral>().takeDamage(1, Time.frameCount);
         }
     }
 }

@@ -11,10 +11,10 @@ public class Enemy2 : EnemyGeneral
     // Start is called before the first frame update
     protected override void Start()
     {
-        hitpoints = 4f;
+        hitpoints = 3f;
         speed = 1f;
         scoreAtKill = 300;
-        xpAtKill = 3;
+        xpAtKill = 2;
         bombAtKill = 2;
         shootInterval = 0.75f;
         rotation = new Vector3(0, 0.25f, 0);
