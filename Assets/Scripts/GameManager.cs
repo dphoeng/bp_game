@@ -34,8 +34,7 @@ public class GameManager : MonoBehaviour
     //      Add more level guns: 3
     //      Add more enemies: 3
     //      Add boss: 0
-    //      Scaling level requirement?
-
+        
     // Start is called before the first frame update
     void Start()
     {
