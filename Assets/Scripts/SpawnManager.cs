@@ -2,21 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
     private GameManager gameManager;
     public List<GameObject> enemyPrefabs;
-    private float spawnInterval;
-    private float spawnIntervalMin = 1f;
+    public List<GameObject> bossPrefabs;
+    public TextMeshProUGUI bossText;
+    public GameObject bossScreen;
+    public Image maskBoss;
+    public Image fillBoss;
+    private float spawnIntervalMin = 2f;
+    private float spawnIntervalMinMin = 0.05f;
+    private float spawnIntervalMax = 6f;
+    private float spawnIntervalMaxMin = 0.5f;
     private float spawnIntervalMinInc = 1f;
     private float startTime;
     private float delay = 0.0f;
     private float delayInc = 0.0f;
     private int enemySpawn;
+    private int bossSpawn;
     private List<float> enemyAllowedTime = new List<float> { 30f, 60f };
+    private List<string> bossNames = new List<string> { "Big Boss Luigi" };
+    private List<float> bossAllowedTime = new List<float> { 120f };
     private List<bool> enemyPastTime;
-    private int x;
+    private List<bool> bossPastTime;
+    private int index = 0;
+
+    // time within boos phase;
+    private float bossTimePast;
+
+    // time past ingame outside boss, used to scale hp and determine possible enemies + spawns boss
+    public float timePast;
 
     // DEBUG SCREEN
     public TextMeshProUGUI intervalText;
@@ -25,10 +43,10 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         startTime = 0;
-        spawnInterval = 900;
         enemySpawn = 0;
-        x = 0;
+        bossSpawn = 0;
         enemyPastTime = new List<bool> { false, false };
+        bossPastTime = new List<bool> { false };
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
@@ -37,60 +55,98 @@ public class SpawnManager : MonoBehaviour
     {
         if (gameManager.gameActive)
         {
-            float timePast = Time.time - startTime;
-			intervalText.text = "spawnInterval<br>" + spawnInterval + "<br><br>spawnIntervalMin<br>" + spawnIntervalMin + "<br><br>timePast<br>" + timePast;
-			if (delayInc <= Time.time)
+            if (!GameObject.FindGameObjectWithTag("Boss"))
             {
-                if (spawnInterval > 200)
+                bossScreen.SetActive(false);
+                timePast = Time.time - startTime - bossTimePast;
+			    intervalText.text = "spawnIntervalMin<br>" + spawnIntervalMin + "<br><br>spawnIntervalMax<br>" + spawnIntervalMax + "<br><br>timePast<br>" + timePast;
+                if (delayInc <= Time.time)
                 {
-                    spawnInterval += -0.0002f * Mathf.Pow(x, 2) - 2;
-                    x++;
+                    if (spawnIntervalMin > spawnIntervalMinMin)
+                    {
+                        spawnIntervalMin += -0.01f;
+                    }
+                    else
+                    {
+                        spawnIntervalMin = spawnIntervalMinMin;
+                    }
+                    if (spawnIntervalMax > spawnIntervalMaxMin)
+                    {
+                        // slow the difficulty increase down (not really since it's not linear in the first place, but without this the curve is insane)
+                        if (spawnIntervalMax < 1)
+                            spawnIntervalMax += -0.005f;
+                        else
+                            spawnIntervalMax += -0.025f;
+                    }
+                    else
+                    {
+                        spawnIntervalMax = spawnIntervalMaxMin;
+                    }
+                    delayInc = Time.time + spawnIntervalMinInc;
                 }
-                else
+                if (enemyPrefabs.Count - 1 > enemySpawn)
                 {
-                    spawnInterval = 200;
+                    if (timePast > enemyAllowedTime[enemySpawn] && !enemyPastTime[enemySpawn])
+                    {
+                        enemyPastTime[enemySpawn] = true;
+                        enemySpawn++;
+                    }
                 }
-                if (spawnIntervalMin > 0.1f)
-				{
-                    spawnIntervalMin -= 0.003f;
-				} else
-				{
-                    spawnIntervalMin -= 0.1f;
+                if (bossPrefabs.Count > bossSpawn)
+                {
+                    if (timePast > bossAllowedTime[bossSpawn] && !bossPastTime[bossSpawn])
+                    {
+                        Instantiate(bossPrefabs[bossSpawn], new Vector3(0, 5, 5), transform.rotation);
+                        bossPastTime[bossSpawn] = true;
+                        bossText.text = bossNames[bossSpawn];
+                        bossScreen.SetActive(true);
+                        bossSpawn++;
+                    }
                 }
-                delayInc = Time.time + spawnIntervalMinInc;
+                if (delay <= Time.time)
+                {
+                    int res = Mathf.FloorToInt(gameManager.randomList[index] / (1000 / (enemySpawn + 1)));
+                    index = gameManager.randomList.Count > index + 1 ? index + 1 : 0;
+                    Instantiate(enemyPrefabs[res], new Vector3(GetRandomFromSeed(-7, 7), 5, 5), transform.rotation);
+                    delay = Time.time + GetRandomFromSeed(spawnIntervalMax, spawnIntervalMin);
+                }
             }
-            if (enemyPrefabs.Count - 1> enemySpawn)
+            else
             {
-                if (timePast > enemyAllowedTime[enemySpawn] && !enemyPastTime[enemySpawn])
-                {
-                    enemyPastTime[enemySpawn] = true;
-                    enemySpawn++;
-                }
-            }
-            if (delay <= Time.time)
-            {
-                if (Random.Range(0, spawnInterval) <= 1)
-                {
-                    Instantiate(enemyPrefabs[Random.Range(0, enemySpawn + 1)], new Vector3(Random.Range(-7f, 7f), 5, 5), transform.rotation);
-                    delay = Time.time + spawnIntervalMin;
-                }
+                bossTimePast += Time.deltaTime;
+                maskBoss.fillAmount = GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss>().getHitpoints() / GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss>().hitpointsStart;
+                bossText.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
+                fillBoss.GetComponent<Image>().color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
             }
         }
     }
 
-    public void startSpawn()
+    public void StartSpawn()
     {
         startTime = Time.time;
+        index = 990;
     }
 
-    public void SpawnWave()
+    private float GetRandomFromSeed(float min, float max)
     {
-        for (int i = 0; i < 7; i++)
-        {
-            if (i < 4)
-                Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], new Vector3(-4.5f + i * 1.5f, 5, 10 - 2f * i), transform.rotation);
-            else
-                Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], new Vector3(-4.5f + i * 1.5f, 5, -2 + 2f * i), transform.rotation);
-        }
+        float ret = gameManager.randomList[index] == 0 ? min : (max - min) / gameManager.randomList.Count * gameManager.randomList[index] + min;
+        index = gameManager.randomList.Count > index + 1 ? index + 1 : 0;
+        return ret;
+    }
+
+    //public void SpawnWave()
+    //{
+    //    for (int i = 0; i < 7; i++)
+    //    {
+    //        if (i < 4)
+    //            Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], new Vector3(-4.5f + i * 1.5f, 5, 10 - 2f * i), transform.rotation);
+    //        else
+    //            Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], new Vector3(-4.5f + i * 1.5f, 5, -2 + 2f * i), transform.rotation);
+    //    }
+    //}
+
+    private float Wave(float lambda, float i, int add)
+    {
+        return 0.5f * Mathf.Sin(2 * Mathf.PI / lambda * i + add) + 0.5f;
     }
 }

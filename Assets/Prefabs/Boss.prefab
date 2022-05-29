@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8037913722207782070}
   m_Layer: 7
   m_Name: Arm 2
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 8037913722290826631}
   m_Layer: 7
   m_Name: Arm 1
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 8037913722359996767}
   m_Layer: 7
   m_Name: Arm 3
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -373,9 +373,9 @@ Transform:
   - {fileID: 8037913722359996763}
   - {fileID: 8037913722462899189}
   - {fileID: 8037913724007849860}
+  - {fileID: 8037913722795372499}
   - {fileID: 8037913722674434606}
   - {fileID: 8037913723385266553}
-  - {fileID: 8037913722795372499}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -473,6 +473,10 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+  targetMarkerPrefab: {fileID: 192421736511785658, guid: e8481b861b0a7e64da66853ca58b1af7, type: 3}
+  projectile2Prefab: {fileID: 7650183786260917371, guid: c32d0e8ebd5a7e7498bc65e47554ccf5, type: 3}
+  projectileMainPrefab: {fileID: 6812421236714380959, guid: e0a10e0c139dc7544a6005eeb76e51e5, type: 3}
+  hitpointsStart: 0
 --- !u!1 &8037913722462899186
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +492,7 @@ GameObject:
   - component: {fileID: 8037913722462899193}
   m_Layer: 7
   m_Name: Arm 4
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -600,7 +604,7 @@ GameObject:
   - component: {fileID: 8037913722674434770}
   m_Layer: 7
   m_Name: Arm 7
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -617,7 +621,7 @@ Transform:
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 8037913722372106924}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8037913722674434771
 MeshFilter:
@@ -712,7 +716,7 @@ GameObject:
   - component: {fileID: 8037913722795372503}
   m_Layer: 7
   m_Name: Arm 6
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -729,7 +733,7 @@ Transform:
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 8037913722372106924}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8037913722795372500
 MeshFilter:
@@ -824,7 +828,7 @@ GameObject:
   - component: {fileID: 8037913723385266557}
   m_Layer: 7
   m_Name: Arm 8
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -841,7 +845,7 @@ Transform:
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 8037913722372106924}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8037913723385266554
 MeshFilter:
@@ -936,7 +940,7 @@ GameObject:
   - component: {fileID: 8037913724007849864}
   m_Layer: 7
   m_Name: Arm 5
-  m_TagString: Boss
+  m_TagString: Boss Arms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

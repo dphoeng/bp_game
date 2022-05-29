@@ -24,17 +24,24 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI bombText;
     public TextMeshProUGUI seedText;
+    public TextMeshProUGUI fpsText;
     public GameObject livesParent;
     public Image maskLevel;
     public Image maskBomb;
     private float delay = 0;
     private float scoreInterval = 1f;
+    private float fpsRefreshRate = 0.5f;
+    private float delayFps = 0;
+    public List<int> randomList;
 
     // TODO LIST
     //      Add more level guns: 3
     //      Add more enemies: 3
-    //      Add boss: 0
-        
+    //      Add boss: 1
+    //      game name lol
+    //      pause screen?
+    //      SOUNDS!
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +66,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (delayFps < Time.time)
+        {
+            fpsText.text = 1 / Time.unscaledDeltaTime + " FPS";
+            delayFps = Time.time + fpsRefreshRate;
+        }
         if (gameActive)
         {
             if (delay <= Time.time)
@@ -88,7 +100,15 @@ public class GameManager : MonoBehaviour
             Random.InitState(0);
             seedText.text = "Seed<br>0";
         }
-        spawnManager.startSpawn();
+        List<int> intList = new List<int>();
+        for (int i = 0; i < 1000; i++)
+        {
+            intList.Add(Random.Range(0, 1000));
+        }
+
+        randomList = intList;
+
+        spawnManager.StartSpawn();
         titleScreen.SetActive(false);
         scoreScreen.SetActive(true);
     }

@@ -68,7 +68,7 @@ public class PlayerStats : MonoBehaviour
         requiredXpText.text = "Required Xp<br>" + RequiredExperience;
         
         if (AttackSpeed > 0.1f)
-            AttackSpeed -= 0.0075f;    
+            AttackSpeed -= 0.005f;    
 
         // every 3 levels gain an extra life
         if ((TotalLevel - 1) % 3 == 0)

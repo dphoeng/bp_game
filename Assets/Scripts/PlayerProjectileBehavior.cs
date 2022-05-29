@@ -25,12 +25,10 @@ public class PlayerProjectileBehavior : ProjectileGeneral
         
         if (other.transform.root.CompareTag("Enemy"))
         {
-            Debug.Log(other.name + ": " + other.transform.root.gameObject.GetComponent<EnemyGeneral>().getHitpoints());
             Destroy(gameObject);
             other.transform.root.gameObject.GetComponent<EnemyGeneral>().takeDamage(1, Time.frameCount);
-        } else if (other.transform.CompareTag("Boss"))
+        } else if (other.transform.CompareTag("Boss") || other.transform.CompareTag("Boss Arms"))
 		{
-            Debug.Log(other.name + ": " + other.transform.gameObject.GetComponent<EnemyGeneral>().getHitpoints());
             Destroy(gameObject);
             other.transform.gameObject.GetComponent<EnemyGeneral>().takeDamage(1, Time.frameCount);
         }

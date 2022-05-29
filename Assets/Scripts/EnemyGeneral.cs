@@ -16,20 +16,20 @@ public class EnemyGeneral : MonoBehaviour
     protected GameObject bombPrefab;
     protected GameObject projectilePrefab;
     protected GameManager gameManager;
+    protected SpawnManager spawnManager;
     public int lastFrame = 0;
-
-    // TODO: Boss enemy?
 
     // Start is called before the first frame update, after child object's start
     protected virtual void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
-        transform.Rotate(rotation);
+        transform.Rotate(rotation * Time.deltaTime * 500);
         transform.Translate(Vector3.back * speed * Time.deltaTime, Space.World);
         if (transform.position.z < -20)
         {

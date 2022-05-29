@@ -8,6 +8,7 @@ TagManager:
   - Player Outer Hitbox
   - Enemy Projectile
   - Boss
+  - Boss Arms
   layers:
   - Default
   - TransparentFX

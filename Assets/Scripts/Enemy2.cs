@@ -11,17 +11,19 @@ public class Enemy2 : EnemyGeneral
     // Start is called before the first frame update
     protected override void Start()
     {
-        hitpoints = 3f;
-        speed = 1f;
+        // at 60 seconds (possible first spawn) has 3hp, only at 90s or more has more than 3 hp
         scoreAtKill = 300;
         xpAtKill = 2;
         bombAtKill = 2;
-        shootInterval = 0.75f;
         rotation = new Vector3(0, 0.25f, 0);
         projectilePrefab = assignedProjectilePrefab;
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         base.Start();
+        hitpoints = 3f + 3f * (spawnManager.timePast - 90) / 100;
+        speed = 1f;
+        shootInterval = 0.75f;
+        Debug.Log("Enemy2 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
     }
 
     // Update is called once per frame

@@ -13,7 +13,7 @@ public class RingOfDeathBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localScale += new Vector3(0.05f, 0, 0.05f);
+        transform.localScale += new Vector3(0.05f, 0, 0.05f) * Time.deltaTime * 500;
         if (transform.localScale.x > 30)
 		{
             Destroy(gameObject);
@@ -22,8 +22,7 @@ public class RingOfDeathBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if ((other.transform.root.CompareTag("Enemy") || other.transform.root.CompareTag("Enemy Projectile")) && other.transform.position.z < 0)
+        if ((other.transform.root.CompareTag("Enemy") && other.transform.position.z < 0) || other.transform.root.CompareTag("Enemy Projectile"))
         {
             Destroy(other.transform.root.gameObject);
         }
