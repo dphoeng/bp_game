@@ -15,7 +15,7 @@ public class SpawnManager : MonoBehaviour
     public Image fillBoss;
     private float spawnIntervalMin = 2f;
     private float spawnIntervalMinMin = 0.05f;
-    private float spawnIntervalMax = 6f;
+    private float spawnIntervalMax = 5f;
     private float spawnIntervalMaxMin = 0.5f;
     private float spawnIntervalMinInc = 1f;
     private float startTime;
@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour
     private float delayInc = 0.0f;
     private int enemySpawn;
     private int bossSpawn;
-    private List<float> enemyAllowedTime = new List<float> { 30f, 60f };
+    private List<float> enemyAllowedTime = new List<float> { 30f, 60f, 160f };
     private List<string> bossNames = new List<string> { "Big Boss Luigi" };
     private List<float> bossAllowedTime = new List<float> { 120f };
     private List<bool> enemyPastTime;
@@ -45,7 +45,7 @@ public class SpawnManager : MonoBehaviour
         startTime = 0;
         enemySpawn = 0;
         bossSpawn = 0;
-        enemyPastTime = new List<bool> { false, false };
+        enemyPastTime = new List<bool> { false, false, false };
         bossPastTime = new List<bool> { false };
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
@@ -73,7 +73,9 @@ public class SpawnManager : MonoBehaviour
                     if (spawnIntervalMax > spawnIntervalMaxMin)
                     {
                         // slow the difficulty increase down (not really since it's not linear in the first place, but without this the curve is insane)
-                        if (spawnIntervalMax < 1)
+                        if (spawnIntervalMax < 2 && spawnIntervalMax >= 1)
+                            spawnIntervalMax += -0.01f;
+                        else if (spawnIntervalMax < 1)
                             spawnIntervalMax += -0.005f;
                         else
                             spawnIntervalMax += -0.025f;

@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject scoreScreen;
     public GameObject debugScreen;
     public GameObject livesPrefab;
-    public List<GameObject> livesList = new List<GameObject>();
+    public List<GameObject> livesList;
     public PlayerController player;
     public PlayerStats playerStats;
     public Button startButton;
@@ -36,7 +36,8 @@ public class GameManager : MonoBehaviour
 
     // TODO LIST
     //      Add more level guns: 3
-    //      Add more enemies: 3
+    //          different bullet type, big ball that deals 1.5 damage?
+    //      Add more enemies: 4
     //      Add boss: 1
     //      game name lol
     //      pause screen?
@@ -54,10 +55,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score<br>0";
         levelText.text = "Lvl. 1";
         bombText.text = playerStats.BombCount + "";
-        livesList.Add(Instantiate(livesPrefab, new Vector3(12.5f, -12.5f, 0), transform.rotation));
-        livesList.Add(Instantiate(livesPrefab, new Vector3(38.75f, -12.5f, 0), transform.rotation));
-        livesList[0].transform.SetParent(livesParent.transform, false);
-        livesList[1].transform.SetParent(livesParent.transform, false);
+        playerStats.AddLives(2);
         maskLevel.fillAmount = 0;
         maskBomb.fillAmount = 0;
         debugScreen.SetActive(false);

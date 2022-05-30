@@ -31,7 +31,6 @@ public class PlayerStats : MonoBehaviour
         Level = 1;
         BombProgress = 0;
         BombCount = 2;
-        Lives = 2;
         AttackSpeed = 0.4f;
     }
 
@@ -71,7 +70,7 @@ public class PlayerStats : MonoBehaviour
             AttackSpeed -= 0.005f;    
 
         // every 3 levels gain an extra life
-        if ((TotalLevel - 1) % 3 == 0)
+        if ((TotalLevel - 1) % 1 == 0)
         {
             AddLives(1);
         }
@@ -93,9 +92,9 @@ public class PlayerStats : MonoBehaviour
     public void AddLives(int livesToAdd)
     {
         Lives += livesToAdd;
-        if (livesToAdd > 0)
+        for (int i = 0; i < livesToAdd; i++)
         {
-            gameManager.livesList.Add(Instantiate(gameManager.livesPrefab, new Vector3(12.5f + 26.25f * (gameManager.livesList.Count % 5), -12.5f - 26.5f * (Mathf.FloorToInt(gameManager.livesList.Count / 5)), 0), transform.rotation));
+            gameManager.livesList.Add(Instantiate(gameManager.livesPrefab, new Vector3(12.5f + 26.25f * (gameManager.livesList.Count % 5), -12.5f - 26.5f * (Mathf.FloorToInt(gameManager.livesList.Count / 5)), 0), Quaternion.Euler(0, 0, 0)));
             gameManager.livesList[gameManager.livesList.Count - 1].transform.SetParent(gameManager.livesParent.transform, false);
         }
     }

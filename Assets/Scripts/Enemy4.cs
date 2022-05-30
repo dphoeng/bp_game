@@ -23,7 +23,7 @@ public class Enemy4 : EnemyGeneral
         base.Start();
         hitpoints = 5f + 4f * (spawnManager.timePast - 90) / 100;
         speed = 0.7f;
-        shootInterval = 1f;
+        shootInterval = Mathf.Max(0.7f, 1f - ((spawnManager.timePast - 160) / 1000));
         // Debug.Log("Enemy4 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
     }
 
@@ -34,15 +34,15 @@ public class Enemy4 : EnemyGeneral
         {
             if (shot)
             {
-                transform.GetChild(0).GetComponent<Animator>().Play("Shoot");
-                transform.GetChild(2).GetComponent<Animator>().Play("Shoot 3");
+                transform.GetComponent<Animator>().Play("Shoot1");
                 Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
                 Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 270f, 0));
                 Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 90f, 0));
                 Instantiate(projectilePrefab, transform.position, transform.rotation);
-			} else
+			}
+            else
 			{
-                transform.GetChild(1).GetComponent<Animator>().Play("Shoot");
+                transform.GetComponent<Animator>().Play("Shoot2");
                 Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 315f, 0));
                 Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 225f, 0));
                 Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 135f, 0));

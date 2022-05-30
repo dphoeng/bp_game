@@ -8,6 +8,8 @@ public class EnemyProjectile3 : ProjectileGeneral
     protected override void Start()
     {
         speed = 4f;
+        // slightly offset bullets forward for a more realistic shooting mechanic
+        transform.position += transform.forward * -0.5f;
         base.Start();
     }
 

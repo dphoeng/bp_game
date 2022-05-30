@@ -18,6 +18,7 @@ public class EnemyGeneral : MonoBehaviour
     protected GameManager gameManager;
     protected SpawnManager spawnManager;
     public int lastFrame = 0;
+    private int index;
 
     // Start is called before the first frame update, after child object's start
     protected virtual void Start()
@@ -65,14 +66,14 @@ public class EnemyGeneral : MonoBehaviour
             {
                 for (int i = 0; i < xpAtKill; i++)
                 {
-                    Vector3 newPos = transform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                    Vector3 newPos = transform.position + new Vector3(GetRandomFromSeed(-1f, 1f), 0, GetRandomFromSeed(-1f, 1f));
                     newPos.x = Mathf.Min(8, Mathf.Max(-8, newPos.x));
                     Instantiate(experiencePrefab, newPos, Quaternion.Euler(new Vector3(0, 0, 0)));
                 }
 
                 for (int i = 0; i < bombAtKill; i++)
                 {
-                    Vector3 newPos = transform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                    Vector3 newPos = transform.position + new Vector3(GetRandomFromSeed(-1f, 1f), 0, GetRandomFromSeed(-1f, 1f));
                     newPos.x = Mathf.Min(8, Mathf.Max(-8, newPos.x));
                     Instantiate(bombPrefab, newPos, Quaternion.Euler(new Vector3(0, 0, 0)));
                 }
@@ -80,5 +81,12 @@ public class EnemyGeneral : MonoBehaviour
                 gameManager.playerStats.AddScore(scoreAtKill);
             }
         }
+    }
+
+    private float GetRandomFromSeed(float min, float max)
+    {
+        float ret = gameManager.randomList[index] == 0 ? min : (max - min) / gameManager.randomList.Count * gameManager.randomList[index] + min;
+        index = gameManager.randomList.Count > index + 1 ? index + 1 : 0;
+        return ret;
     }
 }

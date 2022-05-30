@@ -25,6 +25,7 @@ public class Boss : EnemyGeneral
     private float breakIntervalMain = 0f;
     private bool inBreak = true;
     private bool inBreakMain = true;
+    private int indexMove;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -62,9 +63,10 @@ public class Boss : EnemyGeneral
             speed = 0f;
             if (moveDelay < Time.time)
             {
-                int x = Random.Range(0, locationList.Count);
-                newPos = locationList[x];
-                locationList.RemoveAt(x);
+                int res = Mathf.FloorToInt(gameManager.randomList[indexMove] / (1000 / (locationList.Count)));
+                indexMove = gameManager.randomList.Count > indexMove + 1 ? indexMove + 1 : 0;
+                newPos = locationList[res];
+                locationList.RemoveAt(res);
                 newPosMove = true;
                 moveDelay = Time.time + 9999f;
             }
