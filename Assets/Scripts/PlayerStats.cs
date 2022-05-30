@@ -27,7 +27,7 @@ public class PlayerStats : MonoBehaviour
         Experience = 0;
         RequiredExperience = 60f;
         requiredXpText.text = "Required Xp<br>" + RequiredExperience;
-        TotalLevel = 0;
+        TotalLevel = 1;
         Level = 1;
         BombProgress = 0;
         BombCount = 2;
@@ -61,7 +61,7 @@ public class PlayerStats : MonoBehaviour
 
     private void LevelUp()
     {
-        RequiredExperience += Level * 4;
+        RequiredExperience += Level * 3;
         Level += 1;
         TotalLevel += 1;
 

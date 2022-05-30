@@ -23,7 +23,7 @@ public class Enemy2 : EnemyGeneral
         hitpoints = 3f + 3f * (spawnManager.timePast - 90) / 100;
         speed = 1f;
         shootInterval = 0.75f;
-        Debug.Log("Enemy2 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
+        // Debug.Log("Enemy2 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
     }
 
     // Update is called once per frame

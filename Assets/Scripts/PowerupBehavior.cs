@@ -40,7 +40,7 @@ public class PowerupBehavior : MonoBehaviour
             } else
             {
                 Destroy(gameObject);
-                gameManager.playerStats.AddBombPrg(5f);
+                gameManager.playerStats.AddBombPrg(4f);
             }
         }
     }
