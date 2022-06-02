@@ -100,7 +100,8 @@ public class Boss : EnemyGeneral
                 moveInterval = 2;
                 if (delay2 < Time.time && !inBreak)
                 {
-                    Instantiate(projectile2Prefab, transform.position, transform.rotation);
+                    GameObject shot = Instantiate(projectile2Prefab, transform.position, transform.rotation);
+                    shot.GetComponent<Renderer>().material.color = transform.GetComponent<Renderer>().material.color;
                     delay2 = Time.time + interval2;
                 }
                 if (breakInterval < Time.time)
@@ -135,7 +136,7 @@ public class Boss : EnemyGeneral
         base.Update();
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -147,6 +148,7 @@ public class Boss : EnemyGeneral
                 Destroy(other.gameObject.transform.parent.gameObject);
             }
         }
+        base.OnTriggerEnter(other);
     }
 
     private List<Vector3> CreateNewList()

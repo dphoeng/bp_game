@@ -15,6 +15,7 @@ public class PlayerStats : MonoBehaviour
     public int BombCount { get; set; }
     public int Lives { get; set; }
     public float AttackSpeed { get; set; }
+    public float AttackSpeed2 { get; set; }
 
     // DEBUG
     public TextMeshProUGUI requiredXpText;
@@ -32,6 +33,7 @@ public class PlayerStats : MonoBehaviour
         BombProgress = 0;
         BombCount = 2;
         AttackSpeed = 0.4f;
+        AttackSpeed2 = 0.6f;
     }
 
     // Update is called once per frame
@@ -65,12 +67,15 @@ public class PlayerStats : MonoBehaviour
         TotalLevel += 1;
 
         requiredXpText.text = "Required Xp<br>" + RequiredExperience;
-        
+
         if (AttackSpeed > 0.1f)
-            AttackSpeed -= 0.005f;    
+        {
+            AttackSpeed -= 0.005f;
+            AttackSpeed2 = AttackSpeed * 1.5f;
+        }
 
         // every 3 levels gain an extra life
-        if ((TotalLevel - 1) % 1 == 0)
+        if ((TotalLevel - 1) % 3 == 0)
         {
             AddLives(1);
         }

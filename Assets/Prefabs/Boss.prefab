@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8037913722207782068}
   - component: {fileID: 8037913722207782069}
   - component: {fileID: 8037913722207782070}
+  - component: {fileID: 4739545968690105471}
   m_Layer: 7
   m_Name: Arm 2
   m_TagString: Boss Arms
@@ -112,6 +113,22 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &4739545968690105471
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913722207782067}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8037913722290826624
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +142,7 @@ GameObject:
   - component: {fileID: 8037913722290826629}
   - component: {fileID: 8037913722290826626}
   - component: {fileID: 8037913722290826631}
+  - component: {fileID: 3647020228311528380}
   m_Layer: 7
   m_Name: Arm 1
   m_TagString: Boss Arms
@@ -224,6 +242,22 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &3647020228311528380
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913722290826624}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8037913722359996760
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +271,7 @@ GameObject:
   - component: {fileID: 8037913722359996765}
   - component: {fileID: 8037913722359996762}
   - component: {fileID: 8037913722359996767}
+  - component: {fileID: 5777209200229858626}
   m_Layer: 7
   m_Name: Arm 3
   m_TagString: Boss Arms
@@ -336,6 +371,22 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &5777209200229858626
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913722359996760}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8037913722372106918
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,6 +541,7 @@ GameObject:
   - component: {fileID: 8037913722462899191}
   - component: {fileID: 8037913722462899188}
   - component: {fileID: 8037913722462899193}
+  - component: {fileID: 7789037702318606861}
   m_Layer: 7
   m_Name: Arm 4
   m_TagString: Boss Arms
@@ -589,6 +641,22 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &7789037702318606861
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913722462899186}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8037913722674434607
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,6 +670,7 @@ GameObject:
   - component: {fileID: 8037913722674434768}
   - component: {fileID: 8037913722674434769}
   - component: {fileID: 8037913722674434770}
+  - component: {fileID: 867988193743223603}
   m_Layer: 7
   m_Name: Arm 7
   m_TagString: Boss Arms
@@ -701,6 +770,22 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &867988193743223603
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913722674434607}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8037913722795372496
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +799,7 @@ GameObject:
   - component: {fileID: 8037913722795372501}
   - component: {fileID: 8037913722795372498}
   - component: {fileID: 8037913722795372503}
+  - component: {fileID: 2754944467353875085}
   m_Layer: 7
   m_Name: Arm 6
   m_TagString: Boss Arms
@@ -813,6 +899,22 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &2754944467353875085
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913722795372496}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8037913723385266550
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +928,7 @@ GameObject:
   - component: {fileID: 8037913723385266555}
   - component: {fileID: 8037913723385266552}
   - component: {fileID: 8037913723385266557}
+  - component: {fileID: 3402063044095630177}
   m_Layer: 7
   m_Name: Arm 8
   m_TagString: Boss Arms
@@ -925,6 +1028,22 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &3402063044095630177
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913723385266550}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8037913724007849861
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,6 +1057,7 @@ GameObject:
   - component: {fileID: 8037913724007849862}
   - component: {fileID: 8037913724007849863}
   - component: {fileID: 8037913724007849864}
+  - component: {fileID: 1900764483140864665}
   m_Layer: 7
   m_Name: Arm 5
   m_TagString: Boss Arms
@@ -1037,3 +1157,19 @@ MonoBehaviour:
   assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
+--- !u!54 &1900764483140864665
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037913724007849861}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

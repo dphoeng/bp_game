@@ -8,6 +8,7 @@ public class Enemy4 : EnemyGeneral
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
     private bool shot = false;
+    private Color materialColor = new Color(0.7f, 0.7f, 0.7f);
 
     // Start is called before the first frame update
     protected override void Start()
@@ -21,10 +22,13 @@ public class Enemy4 : EnemyGeneral
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         base.Start();
-        hitpoints = 5f + 4f * (spawnManager.timePast - 90) / 100;
+        startingHitpoints = hitpoints = 5f + 4f * (spawnManager.timePast - 90) / 100;
         speed = 0.7f;
         shootInterval = Mathf.Max(0.7f, 1f - ((spawnManager.timePast - 160) / 1000));
-        // Debug.Log("Enemy4 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
+        //Debug.Log("Enemy4 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
+
+        transform.GetComponent<Renderer>().material.color = materialColor;
+
     }
 
     // Update is called once per frame
@@ -52,5 +56,23 @@ public class Enemy4 : EnemyGeneral
             delay = Time.time + shootInterval;
         }
         base.Update();
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+            gameManager.playerStats.LoseLive();
+            if (gameManager.playerStats.Lives < 0)
+            {
+                Destroy(other.gameObject.transform.parent.gameObject);
+            }
+        }
+        base.OnTriggerEnter(other);
+        if (other.transform.CompareTag("Player Projectile"))
+        {
+            transform.GetComponent<Renderer>().material.color = NewColor(materialColor);
+        }
     }
 }

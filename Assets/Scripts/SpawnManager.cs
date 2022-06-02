@@ -73,12 +73,14 @@ public class SpawnManager : MonoBehaviour
                     if (spawnIntervalMax > spawnIntervalMaxMin)
                     {
                         // slow the difficulty increase down (not really since it's not linear in the first place, but without this the curve is insane)
-                        if (spawnIntervalMax < 2 && spawnIntervalMax >= 1)
-                            spawnIntervalMax += -0.01f;
+                        if (spawnIntervalMax < 2 && spawnIntervalMax >= 1.25f)
+                            spawnIntervalMax -= 0.00625f;
+                        else if (spawnIntervalMax < 1.25f && spawnIntervalMax >= 1)
+                            spawnIntervalMax -= 0.002f;
                         else if (spawnIntervalMax < 1)
-                            spawnIntervalMax += -0.005f;
+                            spawnIntervalMax -= 0.001f;
                         else
-                            spawnIntervalMax += -0.025f;
+                            spawnIntervalMax -= 0.025f;
                     }
                     else
                     {

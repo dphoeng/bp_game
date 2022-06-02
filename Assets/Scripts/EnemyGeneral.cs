@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyGeneral : MonoBehaviour
 {
     protected float hitpoints;
+    protected float startingHitpoints;
     protected float speed;
     protected float shootInterval;
     protected int scoreAtKill;
@@ -25,6 +26,9 @@ public class EnemyGeneral : MonoBehaviour
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        index = gameManager.globalIndex;
+        int indexToAdd = (xpAtKill + bombAtKill) * 2;
+        gameManager.globalIndex = gameManager.randomList.Count > index + indexToAdd ? index + indexToAdd : indexToAdd - (gameManager.randomList.Count - index);
     }
 
     // Update is called once per frame
@@ -38,16 +42,12 @@ public class EnemyGeneral : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.transform.CompareTag("Player Projectile"))
         {
-            Destroy(gameObject);
-            gameManager.playerStats.LoseLive();
-            if (gameManager.playerStats.Lives < 0)
-            {
-                Destroy(other.gameObject.transform.parent.gameObject);
-            }
+            takeDamage(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
+            Destroy(other.gameObject);
         }
     }
 
@@ -88,5 +88,10 @@ public class EnemyGeneral : MonoBehaviour
         float ret = gameManager.randomList[index] == 0 ? min : (max - min) / gameManager.randomList.Count * gameManager.randomList[index] + min;
         index = gameManager.randomList.Count > index + 1 ? index + 1 : 0;
         return ret;
+    }
+
+    protected Color NewColor(Color baseColor)
+    {
+        return baseColor + ((new Color(1, 1, 1) - baseColor) / startingHitpoints * (startingHitpoints - hitpoints));
     }
 }

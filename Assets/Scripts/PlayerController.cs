@@ -6,10 +6,13 @@ public class PlayerController : MonoBehaviour
 {
     private float speed = 5f;
     private float delay = 0.0f;
+    private float delay2 = 0.0f;
     private float ringDelay = 0.0f;
     private float ringDelayLimit = 1f;
     private GameManager gameManager;
     public GameObject projectilePrefab;
+    public GameObject projectilePrefab2;
+    public GameObject projectilePrefab3;
     public GameObject clearRingPrefab;
     public bool touchedBoss;
     public float touchedBossTime;
@@ -40,11 +43,11 @@ public class PlayerController : MonoBehaviour
             transform.Translate(speed * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")), Space.World);
             if (Input.GetKey(KeyCode.Z))
             {
-                transform.Rotate(new Vector3(0, -0.4f, 0) * Time.deltaTime * 700);
+                transform.Rotate(700 * Time.deltaTime * new Vector3(0, -0.4f, 0));
             }
             if (Input.GetKey(KeyCode.C))
             {
-                transform.Rotate(new Vector3(0, 0.4f, 0) * Time.deltaTime * 700);
+                transform.Rotate(700 * Time.deltaTime * new Vector3(0, 0.4f, 0));
             }
 
             // Shoot projectiles
@@ -54,17 +57,25 @@ public class PlayerController : MonoBehaviour
                 {
                     if (gameManager.playerStats.Level < 4)
                         Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
-                    else if (gameManager.playerStats.Level < 8)
+                    else if (gameManager.playerStats.Level >= 4)
                     {
                         Instantiate(projectilePrefab, transform.position + new Vector3(0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 180f, 0));
                         Instantiate(projectilePrefab, transform.position + new Vector3(-0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 180f, 0));
-                    } else
+                    }
+                    if (gameManager.playerStats.Level >= 10)
                     {
-                        Instantiate(projectilePrefab, transform.position + new Vector3(0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 195f, 0));
-                        Instantiate(projectilePrefab, transform.position + new Vector3(0, 0, 0), transform.rotation * Quaternion.Euler(0, 180f, 0));
-                        Instantiate(projectilePrefab, transform.position + new Vector3(-0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 165f, 0));
+                        Instantiate(projectilePrefab3, transform.position + new Vector3(0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 210f, 0));
+                        Instantiate(projectilePrefab3, transform.position + new Vector3(-0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 160f, 0));
                     }
                     delay = Time.time + gameManager.playerStats.AttackSpeed;
+                }
+                if (delay2 <= Time.time)
+                {
+                    if (gameManager.playerStats.Level >= 7)
+                    {
+                        Instantiate(projectilePrefab2, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
+                    }
+                    delay2 = Time.time + gameManager.playerStats.AttackSpeed2;
                 }
             }
 

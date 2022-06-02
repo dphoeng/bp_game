@@ -33,13 +33,12 @@ public class GameManager : MonoBehaviour
     private float fpsRefreshRate = 0.5f;
     private float delayFps = 0;
     public List<int> randomList;
+    public int globalIndex = 0;
 
     // TODO LIST
-    //      Add more level guns: 3
-    //          different bullet type, big ball that deals 1.5 damage?
+    //      Add more level guns: 4
     //      Add more enemies: 4
     //      Add boss: 1
-    //      game name lol
     //      pause screen?
     //      SOUNDS!
 

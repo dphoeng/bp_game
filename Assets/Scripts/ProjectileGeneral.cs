@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProjectileGeneral : MonoBehaviour
 {
     protected float speed;
+    public float damage;
     protected GameManager gameManager;
 
     // Start is called before the first frame update

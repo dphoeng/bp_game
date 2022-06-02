@@ -7,13 +7,13 @@ public class BossArms : EnemyGeneral
     public GameObject assignedProjectilePrefab;
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
-    private Color startColor;
+    private Color materialColor;
     private bool isQuitting;
 
     // Start is called before the first frame update
     protected override void Start()
     {
-        hitpoints = 10f;
+        startingHitpoints = hitpoints = 10f;
         speed = 0f;
         isQuitting = false;
         scoreAtKill = 200;
@@ -24,14 +24,13 @@ public class BossArms : EnemyGeneral
         projectilePrefab = assignedProjectilePrefab;
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
-        startColor = transform.GetComponent<Renderer>().material.color;
+        materialColor = transform.GetComponent<Renderer>().material.color;
         base.Start();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        transform.GetComponent<Renderer>().material.color = startColor + ((new Color(1, 1, 1) - startColor) / 10 * (10 - hitpoints));
         transform.LookAt(transform.parent.transform);
         if (delay <= Time.time && transform.parent.transform.position.z <= -5)
         {
@@ -42,7 +41,7 @@ public class BossArms : EnemyGeneral
         base.Update();
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -53,6 +52,11 @@ public class BossArms : EnemyGeneral
             {
                 Destroy(other.gameObject.transform.parent.gameObject);
             }
+        }
+        base.OnTriggerEnter(other);
+        if (other.transform.CompareTag("Player Projectile"))
+        {
+            transform.GetComponent<Renderer>().material.color = NewColor(materialColor);
         }
     }
 
