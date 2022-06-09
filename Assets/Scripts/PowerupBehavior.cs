@@ -22,7 +22,7 @@ public class PowerupBehavior : MonoBehaviour
         float speed = 2 * Mathf.Pow(Time.time - start, 2) + speedStart;
         if (speed > speedLimit)
             speed = speedLimit;
-        transform.Translate(Vector3.back * speed * Time.deltaTime, Space.World);
+        transform.Translate(speed * Time.deltaTime * Vector3.back, Space.World);
         if (transform.position.z < -20)
         {
             Destroy(gameObject);
@@ -35,12 +35,12 @@ public class PowerupBehavior : MonoBehaviour
         {
             if (gameObject.name == "Experience Cube(Clone)")
             {
-                Destroy(gameObject);
                 gameManager.playerStats.AddXp(10f);
+                Destroy(gameObject);
             } else
             {
+                gameManager.playerStats.AddBombPrg(3f);
                 Destroy(gameObject);
-                gameManager.playerStats.AddBombPrg(4f);
             }
         }
     }

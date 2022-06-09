@@ -21,7 +21,7 @@ public class Enemy3 : EnemyGeneral
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         base.Start();
-        startingHitpoints = hitpoints = 1f + (1f * (spawnManager.timePast - 45) / 200);
+        startingHitpoints = hitpoints = 0.8f + (1f * (spawnManager.timePast - 30) / 200);
         speed = Mathf.Max(0.2f, 1f - (spawnManager.timePast / 500));
         shootInterval = 1f;
         // Debug.Log("Enemy3 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
@@ -58,7 +58,7 @@ public class Enemy3 : EnemyGeneral
             }
         }
         base.OnTriggerEnter(other);
-        if (other.transform.CompareTag("Player Projectile"))
+        if (other.transform.CompareTag("Player Projectile") || other.transform.CompareTag("Player Laser"))
         {
             transform.GetComponent<Renderer>().material.color = NewColor(materialColor);
             transform.GetChild(0).GetComponent<Renderer>().material.color = NewColor(armsMaterialColor);

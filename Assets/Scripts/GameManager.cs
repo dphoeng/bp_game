@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     public int globalIndex = 0;
 
     // TODO LIST
-    //      Add more level guns: 4
+    //      Add more level guns: 5
     //      Add more enemies: 4
     //      Add boss: 1
     //      pause screen?

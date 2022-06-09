@@ -7,12 +7,14 @@ public class PlayerController : MonoBehaviour
     private float speed = 5f;
     private float delay = 0.0f;
     private float delay2 = 0.0f;
+    private float delay3 = 0.0f;
     private float ringDelay = 0.0f;
     private float ringDelayLimit = 1f;
     private GameManager gameManager;
     public GameObject projectilePrefab;
     public GameObject projectilePrefab2;
     public GameObject projectilePrefab3;
+    public GameObject laserPrefab;
     public GameObject clearRingPrefab;
     public bool touchedBoss;
     public float touchedBossTime;
@@ -39,7 +41,11 @@ public class PlayerController : MonoBehaviour
 
         if (gameManager.gameActive)
         {
-
+            if (Input.GetKey(KeyCode.L))
+            {
+                if (Input.GetKeyDown(KeyCode.P))
+                    transform.GetComponent<PlayerStats>().LevelUp();
+            }
             transform.Translate(speed * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")), Space.World);
             if (Input.GetKey(KeyCode.Z))
             {
@@ -76,6 +82,14 @@ public class PlayerController : MonoBehaviour
                         Instantiate(projectilePrefab2, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
                     }
                     delay2 = Time.time + gameManager.playerStats.AttackSpeed2;
+                }
+                if (delay3 <= Time.time)
+                {
+                    if (gameManager.playerStats.Level >= 13)
+                    {
+                        Instantiate(laserPrefab, transform.position, transform.rotation);
+                    }
+                    delay3 = Time.time + gameManager.playerStats.AttackSpeed3;
                 }
             }
 

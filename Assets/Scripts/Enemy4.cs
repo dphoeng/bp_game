@@ -22,7 +22,7 @@ public class Enemy4 : EnemyGeneral
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         base.Start();
-        startingHitpoints = hitpoints = 5f + 4f * (spawnManager.timePast - 90) / 100;
+        startingHitpoints = hitpoints = 5f + 4f * (spawnManager.timePast - 160) / 100;
         speed = 0.7f;
         shootInterval = Mathf.Max(0.7f, 1f - ((spawnManager.timePast - 160) / 1000));
         //Debug.Log("Enemy4 spawned at " + spawnManager.timePast + " has shootInterval: " + shootInterval + ", hitpoints: " + hitpoints + " and speed: " + speed);
@@ -70,7 +70,7 @@ public class Enemy4 : EnemyGeneral
             }
         }
         base.OnTriggerEnter(other);
-        if (other.transform.CompareTag("Player Projectile"))
+        if (other.transform.CompareTag("Player Projectile") || other.transform.CompareTag("Player Laser"))
         {
             transform.GetComponent<Renderer>().material.color = NewColor(materialColor);
         }

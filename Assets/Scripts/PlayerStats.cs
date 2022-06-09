@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour
     public int Lives { get; set; }
     public float AttackSpeed { get; set; }
     public float AttackSpeed2 { get; set; }
+    public float AttackSpeed3 { get; set; }
 
     // DEBUG
     public TextMeshProUGUI requiredXpText;
@@ -32,8 +33,10 @@ public class PlayerStats : MonoBehaviour
         Level = 1;
         BombProgress = 0;
         BombCount = 2;
-        AttackSpeed = 0.4f;
-        AttackSpeed2 = 0.6f;
+        AttackSpeed = 0.4f - (0.005f * (Level - 1));
+        AttackSpeed2 = AttackSpeed * 1.5f;
+        AttackSpeed3 = 1.5f - (0.01f * (Level - 1));
+        gameManager.levelText.text = "Lvl. " + Level;
     }
 
     // Update is called once per frame
@@ -60,7 +63,7 @@ public class PlayerStats : MonoBehaviour
         gameManager.maskLevel.fillAmount = Experience / RequiredExperience;
     }
 
-    private void LevelUp()
+    public void LevelUp()
     {
         RequiredExperience += Level * 3;
         Level += 1;
@@ -72,6 +75,7 @@ public class PlayerStats : MonoBehaviour
         {
             AttackSpeed -= 0.005f;
             AttackSpeed2 = AttackSpeed * 1.5f;
+            AttackSpeed3 -= 0.01f;
         }
 
         // every 3 levels gain an extra life
@@ -79,6 +83,7 @@ public class PlayerStats : MonoBehaviour
         {
             AddLives(1);
         }
+        gameManager.levelText.text = "Lvl. " + Level;
         gameManager.maskLevel.fillAmount = Experience / RequiredExperience;
     }
 

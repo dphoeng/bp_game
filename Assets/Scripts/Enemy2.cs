@@ -55,7 +55,7 @@ public class Enemy2 : EnemyGeneral
             }
         }
         base.OnTriggerEnter(other);
-        if (other.transform.CompareTag("Player Projectile"))
+        if (other.transform.CompareTag("Player Projectile") || other.transform.CompareTag("Player Laser"))
         {
             transform.GetComponent<Renderer>().material.color = NewColor(materialColor);
             transform.GetChild(0).GetComponent<Renderer>().material.color = NewColor(armsMaterialColor);

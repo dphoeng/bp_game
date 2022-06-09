@@ -54,7 +54,7 @@ public class BossArms : EnemyGeneral
             }
         }
         base.OnTriggerEnter(other);
-        if (other.transform.CompareTag("Player Projectile"))
+        if (other.transform.CompareTag("Player Projectile") || other.transform.CompareTag("Player Laser"))
         {
             transform.GetComponent<Renderer>().material.color = NewColor(materialColor);
         }

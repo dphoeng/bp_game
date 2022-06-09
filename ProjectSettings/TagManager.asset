@@ -10,6 +10,7 @@ TagManager:
   - Boss
   - Boss Arms
   - Player Projectile
+  - Player Laser
   layers:
   - Default
   - TransparentFX

@@ -20,6 +20,7 @@ public class EnemyGeneral : MonoBehaviour
     protected SpawnManager spawnManager;
     public int lastFrame = 0;
     private int index;
+    protected int lastLaserHit;
 
     // Start is called before the first frame update, after child object's start
     protected virtual void Start()
@@ -46,8 +47,13 @@ public class EnemyGeneral : MonoBehaviour
     {
         if (other.transform.CompareTag("Player Projectile"))
         {
-            takeDamage(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
+            TakeDamage(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
             Destroy(other.gameObject);
+        }
+        // if hit by player laser, check if current position is inside field, check whether this object has already been hit by this laser already and check whether the alpha value of the laser is higher than 0.95 (fresh laser)
+        else if (other.transform.CompareTag("Player Laser") && transform.position.z < 0 && lastLaserHit != other.gameObject.GetInstanceID() && other.gameObject.GetComponent<Renderer>().material.color.a > 0.95f)
+        {
+            TakeDamage(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
         }
     }
 
@@ -56,7 +62,7 @@ public class EnemyGeneral : MonoBehaviour
         return hitpoints;
     }
 
-    public void takeDamage(float damage, int frame)
+    public void TakeDamage(float damage, int frame)
     {
         if (frame != lastFrame)
         {
