@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class Boss : EnemyGeneral
 {
@@ -10,13 +12,15 @@ public class Boss : EnemyGeneral
     public GameObject targetMarkerPrefab;
     public GameObject projectile2Prefab;
     public GameObject projectileMainPrefab;
+    public TextMeshProUGUI bossText;
+    public Image maskBoss;
+    public Image fillBoss;
     private float moveInterval;
     private float moveDelay;
     private float moveSpeed;
     private List<Vector3> locationList;
     private Vector3 newPos;
     private bool newPosMove;
-    public float hitpointsStart;
     private float delayMain = 0f;
     private float intervalMain = 0.2f;
     private float delay2 = 0f;
@@ -26,13 +30,14 @@ public class Boss : EnemyGeneral
     private bool inBreak = true;
     private bool inBreakMain = true;
     private int indexMove;
+    private bool noEnemies = false;
+
 
     // Start is called before the first frame update
     protected override void Start()
     {
         ColorChildren();
-        hitpointsStart = 50f;
-        hitpoints = hitpointsStart;
+        hitpoints = startingHitpoints = 50f;
         moveInterval = 4f;
         moveDelay = 0f;
         speed = 1.5f;
@@ -49,91 +54,112 @@ public class Boss : EnemyGeneral
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         base.Start();
+
+        bossText = spawnManager.bossText;
+        maskBoss = spawnManager.maskBoss;
+        fillBoss = spawnManager.fillBoss;
+        bossText.text = "Big Boss Luigi";
+        maskBoss.fillAmount = hitpoints / startingHitpoints;
+        bossText.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
+        fillBoss.GetComponent<Image>().color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        transform.GetComponent<Renderer>().material.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
-        if (transform.position.z > -5)
+        if (!noEnemies)
         {
-            transform.position = new Vector3(0, transform.position.y, transform.position.z);
-        } else
-        {
-            speed = 0f;
-            if (moveDelay < Time.time)
+            if (!GameObject.FindWithTag("Enemy Projectile") && !GameObject.FindWithTag("Enemy"))
             {
-                int res = Mathf.FloorToInt(gameManager.randomList[indexMove] / (1000 / (locationList.Count)));
-                indexMove = gameManager.randomList.Count > indexMove + 1 ? indexMove + 1 : 0;
-                newPos = locationList[res];
-                locationList.RemoveAt(res);
-                newPosMove = true;
-                moveDelay = Time.time + 9999f;
+                noEnemies = true;
             }
-            if (newPosMove && transform.position != newPos)
+        }
+        else
+        {
+            if (transform.position.z > -5)
             {
-                transform.position = Vector3.MoveTowards(transform.position, newPos, moveSpeed * Time.deltaTime);
-            } else if (newPosMove)
+                transform.position = new Vector3(0, transform.position.y, transform.position.z);
+            }
+            else
             {
-                newPosMove = false;
-                moveDelay = Time.time + moveInterval;
-                if (locationList.Count == 0)
+                speed = 0f;
+                if (moveDelay < Time.time)
                 {
-                    locationList = CreateNewList();
-                    locationList.Remove(newPos);
+                    int res = Mathf.FloorToInt(gameManager.randomList[indexMove] / (1000 / (locationList.Count)));
+                    indexMove = gameManager.randomList.Count > indexMove + 1 ? indexMove + 1 : 0;
+                    newPos = locationList[res];
+                    locationList.RemoveAt(res);
+                    newPosMove = true;
+                    moveDelay = Time.time + 9999f;
                 }
-            }
-            if (transform.childCount < 7)
-            {
-                if (delay <= Time.time)
+                if (newPosMove && transform.position != newPos)
                 {
-                    if (GameObject.Find("Player"))
+                    transform.position = Vector3.MoveTowards(transform.position, newPos, moveSpeed * Time.deltaTime);
+                }
+                else if (newPosMove)
+                {
+                    newPosMove = false;
+                    moveDelay = Time.time + moveInterval;
+                    if (locationList.Count == 0)
                     {
-                        Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation);
-                        Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation * Quaternion.Euler(0, 90f, 0));
-                        delay = Time.time + shootInterval;
+                        locationList = CreateNewList();
+                        locationList.Remove(newPos);
                     }
                 }
-            }
-            if (transform.childCount < 4)
-            {
-                moveInterval = 2;
-                if (delay2 < Time.time && !inBreak)
+                if (transform.childCount < 7)
                 {
-                    GameObject shot = Instantiate(projectile2Prefab, transform.position, transform.rotation);
-                    shot.GetComponent<Renderer>().material.color = transform.GetComponent<Renderer>().material.color;
-                    delay2 = Time.time + interval2;
+                    if (delay <= Time.time)
+                    {
+                        if (GameObject.Find("Player"))
+                        {
+                            Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation);
+                            Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation * Quaternion.Euler(0, 90f, 0));
+                            delay = Time.time + shootInterval;
+                        }
+                    }
                 }
-                if (breakInterval < Time.time)
+                if (transform.childCount < 4)
                 {
-                    inBreak = !inBreak;
-                    breakInterval = inBreak ? Time.time + 0.5f : Time.time + 2f;
+                    moveInterval = 2;
+                    if (delay2 < Time.time && !inBreak)
+                    {
+                        GameObject shot = Instantiate(projectile2Prefab, transform.position, transform.rotation);
+                        shot.GetComponent<Renderer>().material.color = transform.GetComponent<Renderer>().material.color;
+                        delay2 = Time.time + interval2;
+                    }
+                    if (breakInterval < Time.time)
+                    {
+                        inBreak = !inBreak;
+                        breakInterval = inBreak ? Time.time + 0.5f : Time.time + 2f;
+                    }
                 }
-            }
-            if (transform.childCount < 1)
-            {
-                moveInterval = 0;
-                shootInterval = 3f;
-                intervalMain = 0.15f;
-            }
+                if (transform.childCount < 1)
+                {
+                    moveInterval = 0;
+                    shootInterval = 3f;
+                    intervalMain = 0.15f;
+                }
 
-            if (delayMain < Time.time && !inBreakMain)
-            {
-                Instantiate(projectileMainPrefab, transform.position, transform.rotation);
-                Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0)));
-                Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0)));
-                Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 270, 0)));
-                delayMain = Time.time + intervalMain;
-            }
-            if (breakIntervalMain < Time.time)
-            {
-                inBreakMain = !inBreakMain;
-                breakIntervalMain = inBreakMain ? Time.time + 1f : Time.time + 1f;
-            }
+                if (delayMain < Time.time && !inBreakMain)
+                {
+                    Instantiate(projectileMainPrefab, transform.position, transform.rotation);
+                    Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0)));
+                    Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0)));
+                    Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 270, 0)));
+                    delayMain = Time.time + intervalMain;
+                }
+                if (breakIntervalMain < Time.time)
+                {
+                    inBreakMain = !inBreakMain;
+                    breakIntervalMain = inBreakMain ? Time.time + 1f : Time.time + 1f;
+                }
 
+            }
+            base.Update();
         }
-
-        base.Update();
+        transform.GetComponent<Renderer>().material.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
+        bossText.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
+        fillBoss.GetComponent<Image>().color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -149,6 +175,7 @@ public class Boss : EnemyGeneral
             }
         }
         base.OnTriggerEnter(other);
+        maskBoss.fillAmount = hitpoints / startingHitpoints;
     }
 
     private List<Vector3> CreateNewList()

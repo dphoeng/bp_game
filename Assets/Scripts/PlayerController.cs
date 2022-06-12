@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float speed = 5f;
+    public float speed = 5f;
     private float delay = 0.0f;
     private float delay2 = 0.0f;
     private float delay3 = 0.0f;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public GameObject laserPrefab;
     public GameObject clearRingPrefab;
     public bool touchedBoss;
+    public bool lockMovement;
     public float touchedBossTime;
 
     // Start is called before the first frame update
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         touchedBoss = false;
+        lockMovement = false;
     }
 
     // Update is called once per frame
@@ -46,77 +48,81 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.P))
                     transform.GetComponent<PlayerStats>().LevelUp();
             }
-            transform.Translate(speed * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")), Space.World);
-            if (Input.GetKey(KeyCode.Z))
-            {
-                transform.Rotate(700 * Time.deltaTime * new Vector3(0, -0.4f, 0));
-            }
-            if (Input.GetKey(KeyCode.C))
-            {
-                transform.Rotate(700 * Time.deltaTime * new Vector3(0, 0.4f, 0));
-            }
 
-            // Shoot projectiles
-            if (Input.GetKey(KeyCode.Space))
+            if (!lockMovement)
             {
-                if (delay <= Time.time)
+                transform.Translate(speed * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")), Space.World);
+                if (Input.GetKey(KeyCode.Z))
                 {
-                    if (gameManager.playerStats.Level < 4)
-                        Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
-                    else if (gameManager.playerStats.Level >= 4)
-                    {
-                        Instantiate(projectilePrefab, transform.position + new Vector3(0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 180f, 0));
-                        Instantiate(projectilePrefab, transform.position + new Vector3(-0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 180f, 0));
-                    }
-                    if (gameManager.playerStats.Level >= 10)
-                    {
-                        Instantiate(projectilePrefab3, transform.position + new Vector3(0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 210f, 0));
-                        Instantiate(projectilePrefab3, transform.position + new Vector3(-0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 160f, 0));
-                    }
-                    delay = Time.time + gameManager.playerStats.AttackSpeed;
+                    transform.Rotate(700 * Time.deltaTime * new Vector3(0, -0.4f, 0));
                 }
-                if (delay2 <= Time.time)
+                if (Input.GetKey(KeyCode.C))
                 {
-                    if (gameManager.playerStats.Level >= 7)
-                    {
-                        Instantiate(projectilePrefab2, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
-                    }
-                    delay2 = Time.time + gameManager.playerStats.AttackSpeed2;
+                    transform.Rotate(700 * Time.deltaTime * new Vector3(0, 0.4f, 0));
                 }
-                if (delay3 <= Time.time)
-                {
-                    if (gameManager.playerStats.Level >= 13)
-                    {
-                        Instantiate(laserPrefab, transform.position, transform.rotation);
-                    }
-                    delay3 = Time.time + gameManager.playerStats.AttackSpeed3;
-                }
-            }
 
-            // Slow player down for more control and precise movement
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                speed = 2f;
-            }
-            else
-            {
-                speed = 5f;
-            }
-
-            // Spawn nuke
-            if (Input.GetKey(KeyCode.X))
-            { 
-                if (ringDelay <= Time.time)
+                // Shoot projectiles
+                if (Input.GetKey(KeyCode.Space))
                 {
-                    if (gameManager.playerStats.BombCount > 0)
-					{
-                        Nuke();
-                        gameManager.playerStats.AddBomb(-1);
-                        ringDelay = Time.time + ringDelayLimit;
-					} else
-					{
-                        gameManager.playerStats.NoBombs();
-					}
+                    if (delay <= Time.time)
+                    {
+                        if (gameManager.playerStats.Level < 4)
+                            Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
+                        else if (gameManager.playerStats.Level >= 4)
+                        {
+                            Instantiate(projectilePrefab, transform.position + new Vector3(0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 180f, 0));
+                            Instantiate(projectilePrefab, transform.position + new Vector3(-0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 180f, 0));
+                        }
+                        if (gameManager.playerStats.Level >= 10)
+                        {
+                            Instantiate(projectilePrefab3, transform.position + new Vector3(0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 210f, 0));
+                            Instantiate(projectilePrefab3, transform.position + new Vector3(-0.3f, 0, 0), transform.rotation * Quaternion.Euler(0, 160f, 0));
+                        }
+                        delay = Time.time + gameManager.playerStats.AttackSpeed;
+                    }
+                    if (delay2 <= Time.time)
+                    {
+                        if (gameManager.playerStats.Level >= 7)
+                        {
+                            Instantiate(projectilePrefab2, transform.position, transform.rotation * Quaternion.Euler(0, 180f, 0));
+                        }
+                        delay2 = Time.time + gameManager.playerStats.AttackSpeed2;
+                    }
+                    if (delay3 <= Time.time)
+                    {
+                        if (gameManager.playerStats.Level >= 13)
+                        {
+                            Instantiate(laserPrefab, transform.position, transform.rotation);
+                        }
+                        delay3 = Time.time + gameManager.playerStats.AttackSpeed3;
+                    }
+                }
+
+                // Slow player down for more control and precise movement
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    speed = 2f;
+                }
+                else
+                {
+                    speed = 5f;
+                }
+
+                // Spawn nuke
+                if (Input.GetKey(KeyCode.X))
+                { 
+                    if (ringDelay <= Time.time)
+                    {
+                        if (gameManager.playerStats.BombCount > 0)
+					    {
+                            Nuke();
+                            gameManager.playerStats.AddBomb(-1);
+                            ringDelay = Time.time + ringDelayLimit;
+					    } else
+					    {
+                            gameManager.playerStats.NoBombs();
+					    }
+                    }
                 }
             }
 
@@ -134,12 +140,9 @@ public class PlayerController : MonoBehaviour
         if (touchedBoss)
         {
             if (touchedBossTime > Time.time)
-            {
                 transform.position = Vector3.MoveTowards(transform.position, GameObject.FindGameObjectWithTag("Boss").transform.position, speed * Time.deltaTime * -1 * 2);
-            } else
-            {
+            else
                 touchedBoss = false;
-            }
         }
     }
 

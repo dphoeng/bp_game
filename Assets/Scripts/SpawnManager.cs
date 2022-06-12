@@ -9,8 +9,9 @@ public class SpawnManager : MonoBehaviour
     private GameManager gameManager;
     public List<GameObject> enemyPrefabs;
     public List<GameObject> bossPrefabs;
-    public TextMeshProUGUI bossText;
     public GameObject bossScreen;
+    public GameObject blinderScreen;
+    public TextMeshProUGUI bossText;
     public Image maskBoss;
     public Image fillBoss;
     private float spawnIntervalMin = 2f;
@@ -24,8 +25,7 @@ public class SpawnManager : MonoBehaviour
     private int enemySpawn;
     private int bossSpawn;
     private List<float> enemyAllowedTime = new List<float> { 30f, 60f, 160f };
-    private List<string> bossNames = new List<string> { "Big Boss Luigi" };
-    private List<float> bossAllowedTime = new List<float> { 120f };
+    private List<float> bossAllowedTime = new List<float> { 5f, 10f };
     private List<bool> enemyPastTime;
     private List<bool> bossPastTime;
     private int index = 0;
@@ -46,7 +46,7 @@ public class SpawnManager : MonoBehaviour
         enemySpawn = 0;
         bossSpawn = 0;
         enemyPastTime = new List<bool> { false, false, false };
-        bossPastTime = new List<bool> { false };
+        bossPastTime = new List<bool> { false, false };
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
@@ -102,7 +102,6 @@ public class SpawnManager : MonoBehaviour
                     {
                         Instantiate(bossPrefabs[bossSpawn], new Vector3(0, 5, 5), transform.rotation);
                         bossPastTime[bossSpawn] = true;
-                        bossText.text = bossNames[bossSpawn];
                         bossScreen.SetActive(true);
                         bossSpawn++;
                     }
@@ -118,9 +117,6 @@ public class SpawnManager : MonoBehaviour
             else
             {
                 bossTimePast += Time.deltaTime;
-                maskBoss.fillAmount = GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss>().getHitpoints() / GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss>().hitpointsStart;
-                bossText.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
-                fillBoss.GetComponent<Image>().color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
             }
         }
     }
