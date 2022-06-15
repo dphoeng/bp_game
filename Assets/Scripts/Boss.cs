@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Boss : EnemyGeneral
 {
-    public GameObject assignedProjectilePrefab;
+    public GameObject projectilePrefab;
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
     public GameObject targetMarkerPrefab;
@@ -37,7 +37,7 @@ public class Boss : EnemyGeneral
     protected override void Start()
     {
         ColorChildren();
-        hitpoints = startingHitpoints = 50f;
+        hitpoints = startingHitpoints = 75f;
         moveInterval = 4f;
         moveDelay = 0f;
         speed = 1.5f;
@@ -50,7 +50,6 @@ public class Boss : EnemyGeneral
         locationList = CreateNewList();
         newPos = locationList[Random.Range(0, 8)];
         rotation = new Vector3(0, 0.5f, 0);
-        projectilePrefab = assignedProjectilePrefab;
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         base.Start();
@@ -106,27 +105,42 @@ public class Boss : EnemyGeneral
                         locationList.Remove(newPos);
                     }
                 }
-                if (transform.childCount < 7)
+                if (!GameObject.FindGameObjectWithTag("Ring of Death"))
                 {
-                    if (delay <= Time.time)
+                    if (transform.childCount < 7)
                     {
-                        if (GameObject.Find("Player"))
+                        if (delay <= Time.time)
                         {
-                            Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation);
-                            Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation * Quaternion.Euler(0, 90f, 0));
-                            delay = Time.time + shootInterval;
+                            if (GameObject.Find("Player"))
+                            {
+                                Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation);
+                                Instantiate(targetMarkerPrefab, GameObject.Find("Player").transform.position, transform.rotation * Quaternion.Euler(0, 90f, 0));
+                                delay = Time.time + shootInterval;
+                            }
                         }
+                    }
+                    if (transform.childCount < 4)
+                    {
+                        if (delay2 < Time.time && !inBreak)
+                        {
+                            GameObject shot = Instantiate(projectile2Prefab, transform.position, transform.rotation);
+                            shot.GetComponent<Renderer>().material.color = transform.GetComponent<Renderer>().material.color;
+                            delay2 = Time.time + interval2;
+                        }
+                    }
+
+                    if (delayMain < Time.time && !inBreakMain)
+                    {
+                        Instantiate(projectileMainPrefab, transform.position, transform.rotation);
+                        Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0)));
+                        Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0)));
+                        Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 270, 0)));
+                        delayMain = Time.time + intervalMain;
                     }
                 }
                 if (transform.childCount < 4)
                 {
                     moveInterval = 2;
-                    if (delay2 < Time.time && !inBreak)
-                    {
-                        GameObject shot = Instantiate(projectile2Prefab, transform.position, transform.rotation);
-                        shot.GetComponent<Renderer>().material.color = transform.GetComponent<Renderer>().material.color;
-                        delay2 = Time.time + interval2;
-                    }
                     if (breakInterval < Time.time)
                     {
                         inBreak = !inBreak;
@@ -138,15 +152,6 @@ public class Boss : EnemyGeneral
                     moveInterval = 0;
                     shootInterval = 3f;
                     intervalMain = 0.15f;
-                }
-
-                if (delayMain < Time.time && !inBreakMain)
-                {
-                    Instantiate(projectileMainPrefab, transform.position, transform.rotation);
-                    Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0)));
-                    Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0)));
-                    Instantiate(projectileMainPrefab, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 270, 0)));
-                    delayMain = Time.time + intervalMain;
                 }
                 if (breakIntervalMain < Time.time)
                 {

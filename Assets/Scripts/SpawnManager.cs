@@ -25,7 +25,7 @@ public class SpawnManager : MonoBehaviour
     private int enemySpawn;
     private int bossSpawn;
     private List<float> enemyAllowedTime = new List<float> { 30f, 60f, 160f };
-    private List<float> bossAllowedTime = new List<float> { 5f, 10f };
+    private List<float> bossAllowedTime = new List<float> { 1f, 2f };
     private List<bool> enemyPastTime;
     private List<bool> bossPastTime;
     private int index = 0;

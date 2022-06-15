@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossArms : EnemyGeneral
 {
-    public GameObject assignedProjectilePrefab;
+    public GameObject projectilePrefab;
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
     private Color materialColor;
@@ -13,7 +13,7 @@ public class BossArms : EnemyGeneral
     // Start is called before the first frame update
     protected override void Start()
     {
-        startingHitpoints = hitpoints = 10f;
+        startingHitpoints = hitpoints = 15f;
         speed = 0f;
         isQuitting = false;
         scoreAtKill = 200;
@@ -21,7 +21,6 @@ public class BossArms : EnemyGeneral
         bombAtKill = 0;
         shootInterval = 0.2f;
         rotation = new Vector3(0, 0, 0);
-        projectilePrefab = assignedProjectilePrefab;
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         materialColor = transform.GetComponent<Renderer>().material.color;
@@ -32,7 +31,7 @@ public class BossArms : EnemyGeneral
     protected override void Update()
     {
         transform.LookAt(transform.parent.transform);
-        if (delay <= Time.time && transform.parent.transform.position.z <= -5)
+        if (delay <= Time.time && transform.parent.transform.position.z <= -5 && !GameObject.FindGameObjectWithTag("Ring of Death"))
         {
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
             projectile.GetComponent<Renderer>().material.SetColor("_Color", transform.GetComponent<Renderer>().material.color);

@@ -2,20 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserProjectile : MonoBehaviour
+public class Boss2Projectile1 : ProjectileGeneral
 {
-    private GameManager gameManager;
- 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        speed = 6f;
+        base.Start();
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            Destroy(gameObject);
             gameManager.playerStats.LoseLive();
             if (gameManager.playerStats.Lives < 0)
             {

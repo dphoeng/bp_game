@@ -20,17 +20,14 @@ public class Boss2Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player)
-        {
-            transform.rotation = player.transform.rotation * Quaternion.Euler(new Vector3(0, 0, 180));
-        }
-        if (transform.childCount < 1)
+        if (transform.childCount < 2)
         {
             Destroy(gameObject);
         }
         if (childObj.activated && player)
         {
-            transform.Translate(player.GetComponent<PlayerController>().speed * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal") * -1, 0, Input.GetAxisRaw("Vertical") * -1), Space.World);
+            transform.rotation = player.transform.rotation * Quaternion.Euler(new Vector3(0, 0, 180));
+            transform.Translate(player.GetComponent<PlayerController>().speed * 0.6f * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal") * -1, 0, Input.GetAxisRaw("Vertical") * -1), Space.World);
 
             // Border control
             if (transform.position.z < -17.5f)
@@ -53,6 +50,5 @@ public class Boss2Movement : MonoBehaviour
                     touchedPlayer = false;
             }
         }
-
     }
 }

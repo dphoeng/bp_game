@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 3951173409771489142, guid: 91defd13c664fdc439d356d01c894511, type: 3}
+  projectilePrefab: {fileID: 3951173409771489142, guid: 91defd13c664fdc439d356d01c894511, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &8495398981817948110

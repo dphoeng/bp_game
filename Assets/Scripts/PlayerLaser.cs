@@ -12,7 +12,8 @@ public class PlayerLaser : ProjectileGeneral
         laserMaterial = gameObject.GetComponent<Renderer>().material;
         laserMaterial.shader = Shader.Find("Transparent/Diffuse");
         transform.position += transform.forward * 15f;
-        damage = 2f;
+        // deals 1.5 damage from lvl 7-13 and 0.16667 extra per level afterwards
+        damage = Mathf.Max((GameObject.Find("Player").GetComponent<PlayerStats>().Level - 13) / 6, 0) + 1.5f;
         base.Start();
     }
 

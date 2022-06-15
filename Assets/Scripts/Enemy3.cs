@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy3 : EnemyGeneral
 {
-    public GameObject assignedProjectilePrefab;
+    public GameObject projectilePrefab;
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
     private Color materialColor = new Color(0, 0.2f, 0);
@@ -17,7 +17,6 @@ public class Enemy3 : EnemyGeneral
         xpAtKill = 1;
         bombAtKill = 1;
         rotation = new Vector3(0, 0, 0);
-        projectilePrefab = assignedProjectilePrefab;
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         base.Start();
@@ -38,7 +37,7 @@ public class Enemy3 : EnemyGeneral
             transform.LookAt(gameManager.player.gameObject.transform);
             transform.rotation = transform.rotation * Quaternion.Euler(0, 180f, 0);
         }
-        if (delay <= Time.time && transform.position.z < 0)
+        if (delay <= Time.time && transform.position.z < 0 && !GameObject.FindGameObjectWithTag("Ring of Death"))
         {
             Instantiate(projectilePrefab, transform.position, transform.rotation);
             delay = Time.time + shootInterval;

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserProjectile : MonoBehaviour
+public class Boss2LaserSpawn : MonoBehaviour
 {
     private GameManager gameManager;
- 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +14,7 @@ public class LaserProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && gameObject.GetComponent<Renderer>().material.color.a > 0.95f)
         {
             gameManager.playerStats.LoseLive();
             if (gameManager.playerStats.Lives < 0)

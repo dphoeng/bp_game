@@ -11,6 +11,7 @@ TagManager:
   - Boss Arms
   - Player Projectile
   - Player Laser
+  - Ring of Death
   layers:
   - Default
   - TransparentFX

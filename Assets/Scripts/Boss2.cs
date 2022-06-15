@@ -6,26 +6,38 @@ using UnityEngine.UI;
 
 public class Boss2 : EnemyGeneral
 {
-    public GameObject assignedProjectilePrefab;
+    public List<GameObject> projectilePrefab;
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
+    private GameObject lastProjectile;
     private GameObject player;
     public TextMeshProUGUI bossText;
     public Image maskBoss;
     public Image fillBoss;
+    private float initialLaserDelay;
+    private float shootInterval2;
+    private float delay2 = 0f;
+    private float shootInterval3;
+    private float delay3 = 0f;
+    private float regenLaserInterval = 0.1f;
+    private float regenLaserDelay = 0f;
+    private int indexLaser = 0;
     public bool activated = false;
+    public bool secondPhaseActivated = false;
     private bool lockedScreen = false;
     private bool noEnemies = false;
+    private bool secondPhase = false;
 
     // Start is called before the first frame update
     protected override void Start()
     {
-        hitpoints = startingHitpoints = 10;
-        scoreAtKill = 2000;
-        xpAtKill = 12;
-        bombAtKill = 10;
-        shootInterval = 0.5f;
-        projectilePrefab = assignedProjectilePrefab;
+        hitpoints = startingHitpoints = 50;
+        scoreAtKill = 4000;
+        xpAtKill = 20;
+        bombAtKill = 15;
+        shootInterval = 0.3f;
+        shootInterval2 = 0.15f;
+        shootInterval3 = 1.3f;
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
         player = GameObject.Find("Player");
@@ -54,7 +66,7 @@ public class Boss2 : EnemyGeneral
             }
         } else
         {
-            if (!activated && !lockedScreen)
+            if (!activated && !lockedScreen && !secondPhase && !secondPhaseActivated)
             {
                 if (spawnManager.blinderScreen.GetComponent<Renderer>().material.color.a >= 1)
                 {
@@ -68,10 +80,64 @@ public class Boss2 : EnemyGeneral
                 }
 
             }
-            if (delay <= Time.time && activated)
+            if (activated)
             {
-                Instantiate(projectilePrefab, transform.position, transform.rotation);
-                delay = Time.time + shootInterval;
+                if (!secondPhase)
+                {
+                    if (!GameObject.FindGameObjectWithTag("Ring of Death"))
+                    {
+                        if (delay <= Time.time)
+                        {
+                            if (hitpoints < 45)
+                            {
+                                lastProjectile = Instantiate(projectilePrefab[0], transform.position, transform.rotation);
+                                lastProjectile.transform.Translate(new Vector3(0.3f, 0, 0), Space.Self);
+                                lastProjectile = Instantiate(projectilePrefab[0], transform.position, transform.rotation);
+                                lastProjectile.transform.Translate(new Vector3(-0.3f, 0, 0), Space.Self);
+                            } else
+                                lastProjectile = Instantiate(projectilePrefab[0], transform.position, transform.rotation);
+                            if (hitpoints < 30)
+                            {
+                                lastProjectile = Instantiate(projectilePrefab[2], transform.position, transform.rotation * Quaternion.Euler(0, -25f, 0));
+                                lastProjectile.transform.Translate(new Vector3(0.3f, 0, 0), Space.Self);
+                                lastProjectile = Instantiate(projectilePrefab[2], transform.position, transform.rotation * Quaternion.Euler(0, 25f, 0));
+                                lastProjectile.transform.Translate(new Vector3(-0.3f, 0, 0), Space.Self);
+                            }    
+                            delay = Time.time + shootInterval;
+                        }
+                        if (delay2 <= Time.time && hitpoints < 25)
+                        {
+                            Instantiate(projectilePrefab[1], transform.position, transform.rotation);
+                            delay2 = Time.time + shootInterval2;
+                        }
+                        if (delay3 <= Time.time && initialLaserDelay <= Time.time && hitpoints < 37)
+                        {
+                            lastProjectile = Instantiate(projectilePrefab[3], transform.position, transform.rotation * Quaternion.Euler(0, 0, 180));
+                            lastProjectile.transform.position -= transform.forward * 28f;
+                            delay3 = Time.time + shootInterval3;
+                        }
+                    }
+                }
+            }
+            if (secondPhase)
+            {
+                if (hitpoints < 75)
+                {
+                    hitpoints += Time.deltaTime * 7;
+                    maskBoss.fillAmount = hitpoints / startingHitpoints;
+                    if (regenLaserDelay <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death"))
+                    {
+                        Instantiate(projectilePrefab[3], new Vector3(GetRandomFromSeedLaser(-7.5f, 7.5f), 5, GetRandomFromSeedLaser(-17.5f, -2.5f)), transform.rotation * Quaternion.Euler(0, GetRandomFromSeedLaser(0, 180), 180));
+                        regenLaserDelay = Time.time + regenLaserInterval;
+                    }
+                }
+                else
+                {
+                    secondPhase = false;
+                    secondPhaseActivated = true;
+                    transform.root.GetChild(1).gameObject.SetActive(false);
+                    hitpoints = 75;
+                }
             }
         }
     }
@@ -81,8 +147,16 @@ public class Boss2 : EnemyGeneral
         activated = true;
         lockedScreen = false;
         spawnManager.blinderScreen.SetActive(false);
+        initialLaserDelay = Time.time + 1f;
         transform.parent.position = new Vector3(0, 5, -5);
         player.GetComponent<PlayerController>().lockMovement = false;
+    }
+
+    private float GetRandomFromSeedLaser(float min, float max)
+    {
+        float ret = gameManager.randomList[indexLaser] == 0 ? min : (max - min) / gameManager.randomList.Count * gameManager.randomList[indexLaser] + min;
+        indexLaser = gameManager.randomList.Count > indexLaser + 1 ? indexLaser + 1 : 0;
+        return ret;
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -99,7 +173,47 @@ public class Boss2 : EnemyGeneral
                 Destroy(other.gameObject.transform.parent.gameObject);
             }
         }
-        base.OnTriggerEnter(other);
+        else if (other.transform.CompareTag("Player Projectile"))
+        {
+            if (!secondPhase)
+            {
+                TakeDamageSpecial(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
+            }
+            Destroy(other.gameObject);
+        }
+        // if hit by player laser, check if current position is inside field, check whether this object has already been hit by this laser already and check whether the alpha value of the laser is higher than 0.95 (fresh laser)
+        else if (other.transform.CompareTag("Player Laser") && transform.position.z < 0 && lastLaserHit != other.gameObject.GetInstanceID() && other.gameObject.GetComponent<Renderer>().material.color.a > 0.95f)
+        {
+            if (!secondPhase)
+                TakeDamageSpecial(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
+        }
         maskBoss.fillAmount = hitpoints / startingHitpoints;
+    }
+
+    public void TakeDamageSpecial(float damage, int frame)
+    {
+        // taking damage for first phase
+        if (!secondPhase && !secondPhaseActivated)
+        {
+            if (frame != lastFrame)
+            {
+                lastFrame = frame;
+                hitpoints -= damage;
+                if (hitpoints <= 0)
+                {
+                    startingHitpoints = 75;
+                    hitpoints = 0;
+                    transform.root.GetChild(1).gameObject.SetActive(true);
+                    activated = false;
+                    secondPhase = true;
+                }
+            }
+        }
+
+        // taking damage in second phase, this prevents the object from being destroyed prematurely
+        else if (secondPhaseActivated)
+        {
+            TakeDamage(damage, frame);
+        }
     }
 }

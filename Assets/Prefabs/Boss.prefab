@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &7573153042175107788
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &6395432237700023289
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &4918752398228641098
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &5950012211879406594
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &8093570842300004028
@@ -755,7 +755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &5413899177330863680
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &3676776695379171489
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
 --- !u!54 &2548428414401835435
@@ -1166,7 +1166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastFrame: 0
-  assignedProjectilePrefab: {fileID: 2965678501911939114, guid: a72292d4ae7a7144f96fc0bfd9ff72f2, type: 3}
+  projectilePrefab: {fileID: 7650183786260917371, guid: c32d0e8ebd5a7e7498bc65e47554ccf5, type: 3}
   assignedExperiencePrefab: {fileID: 1528111419985755907, guid: d384efa75ddfbb34793b253d2e9454cb, type: 3}
   assignedBombPrefab: {fileID: 4524787792658241421, guid: 9f95f23daaf56fe45b2e4bff6b413dfb, type: 3}
   targetMarkerPrefab: {fileID: 192421736511785658, guid: e8481b861b0a7e64da66853ca58b1af7, type: 3}

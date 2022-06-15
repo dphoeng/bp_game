@@ -8,7 +8,8 @@ public class PlayerProjectile3 : ProjectileGeneral
     protected override void Start()
     {
         speed = 8f;
-        damage = 0.5f;
+        // deals 0.5 damage from lvl 1-13 and 0.05 extra per level afterwards
+        damage = Mathf.Max((GameObject.Find("Player").GetComponent<PlayerStats>().Level - 13) / 20, 0) + 0.5f;
         base.Start();
     }
 

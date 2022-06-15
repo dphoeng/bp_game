@@ -15,7 +15,6 @@ public class EnemyGeneral : MonoBehaviour
     protected Vector3 rotation;
     protected GameObject experiencePrefab;
     protected GameObject bombPrefab;
-    protected GameObject projectilePrefab;
     protected GameManager gameManager;
     protected SpawnManager spawnManager;
     public int lastFrame = 0;
@@ -55,11 +54,6 @@ public class EnemyGeneral : MonoBehaviour
         {
             TakeDamage(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
         }
-    }
-
-    public float getHitpoints()
-    {
-        return hitpoints;
     }
 
     public void TakeDamage(float damage, int frame)
