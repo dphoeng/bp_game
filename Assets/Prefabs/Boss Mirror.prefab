@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 216806129683529687}
   - component: {fileID: 7230765478433611912}
   - component: {fileID: 8902762461539234512}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shield
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -265,6 +265,7 @@ MonoBehaviour:
   fillBoss: {fileID: 0}
   activated: 0
   secondPhaseActivated: 0
+  shieldPhaseShootDelay: 0
 --- !u!1 &6310703197737921783
 GameObject:
   m_ObjectHideFlags: 0

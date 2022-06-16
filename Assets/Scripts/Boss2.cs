@@ -19,14 +19,19 @@ public class Boss2 : EnemyGeneral
     private float delay2 = 0f;
     private float shootInterval3;
     private float delay3 = 0f;
-    private float regenLaserInterval = 0.1f;
+    private float regenLaserInterval = 0.075f;
     private float regenLaserDelay = 0f;
     private int indexLaser = 0;
+    private int indexPhaseEnd = 0;
     public bool activated = false;
     public bool secondPhaseActivated = false;
     private bool lockedScreen = false;
     private bool noEnemies = false;
     private bool secondPhase = false;
+    public bool shieldPhaseLaserDelay = false;
+    public float shieldPhaseShootDuration = 3f;
+    public float shieldPhaseShootInterval = 0.02f;
+    public float shieldPhaseShootDelay = 0;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -123,9 +128,9 @@ public class Boss2 : EnemyGeneral
             {
                 if (hitpoints < 75)
                 {
-                    hitpoints += Time.deltaTime * 7;
+                    hitpoints += Time.deltaTime * 3f;
                     maskBoss.fillAmount = hitpoints / startingHitpoints;
-                    if (regenLaserDelay <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death"))
+                    if (regenLaserDelay <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death") && shieldPhaseLaserDelay)
                     {
                         Instantiate(projectilePrefab[3], new Vector3(GetRandomFromSeedLaser(-7.5f, 7.5f), 5, GetRandomFromSeedLaser(-17.5f, -2.5f)), transform.rotation * Quaternion.Euler(0, GetRandomFromSeedLaser(0, 180), 180));
                         regenLaserDelay = Time.time + regenLaserInterval;
@@ -137,10 +142,38 @@ public class Boss2 : EnemyGeneral
                     secondPhaseActivated = true;
                     transform.root.GetChild(1).gameObject.SetActive(false);
                     hitpoints = 75;
+                    bossText.text = "Ror'Mir (Unleashed)";
                 }
             }
+            if (shieldPhaseShootDuration >= Time.time)
+			{
+                if (shieldPhaseShootDelay <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death"))
+				{
+                    for (int x = 0; x < 6; x++)
+					{
+                        float res = GetRandomFromSeed(0, 6.5f);
+                        int ind = Mathf.FloorToInt(res / 2);
+
+                        if (ind == 3)
+						{
+                            lastProjectile = Instantiate(projectilePrefab[ind], transform.position, transform.rotation * Quaternion.Euler(0, GetRandomFromSeed(0, 360), 180));
+                            lastProjectile.transform.position -= lastProjectile.transform.forward * 28f;
+                        }
+                        else
+						{
+                            Instantiate(projectilePrefab[ind], transform.position, transform.rotation * Quaternion.Euler(0, GetRandomFromSeed(0, 360), 0));
+                        }
+                    }
+                    shieldPhaseShootDelay = Time.time + shieldPhaseShootInterval;
+                }
+			}
         }
     }
+
+    private void ActivateShieldPhaseShoot()
+	{
+        shieldPhaseLaserDelay = true;
+	}
 
     private void ActivateBoss()
     {
@@ -206,6 +239,9 @@ public class Boss2 : EnemyGeneral
                     transform.root.GetChild(1).gameObject.SetActive(true);
                     activated = false;
                     secondPhase = true;
+                    bossText.text = "Ror'Mir (Recovering)";
+                    Invoke(nameof(ActivateShieldPhaseShoot), 5);
+                    shieldPhaseShootDuration += Time.time;
                 }
             }
         }
@@ -215,5 +251,12 @@ public class Boss2 : EnemyGeneral
         {
             TakeDamage(damage, frame);
         }
+    }
+
+    private float GetRandomFromSeed(float min, float max)
+    {
+        float ret = gameManager.randomList[indexPhaseEnd] == 0 ? min : (max - min) / gameManager.randomList.Count * gameManager.randomList[indexPhaseEnd] + min;
+        indexPhaseEnd = gameManager.randomList.Count > indexPhaseEnd + 1 ? indexPhaseEnd + 1 : 0;
+        return ret;
     }
 }

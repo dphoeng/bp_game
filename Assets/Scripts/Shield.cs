@@ -15,7 +15,7 @@ public class Shield : EnemyGeneral
         scoreAtKill = 99999;
         xpAtKill = 0;
         bombAtKill = 0;
-        shootInterval = 0.2f;
+        shootInterval = 0.3f;
         rotation = new Vector3(0, 0, 0);
         rotation = new Vector3(0, 0.5f, 0);
         speed = 0;
@@ -26,8 +26,8 @@ public class Shield : EnemyGeneral
     // Update is called once per frame
     protected override void Update()
     {
-        shieldRenderer.material.color += new Color(Time.deltaTime * 0.1f, Time.deltaTime * 0.1f, Time.deltaTime * 0.1f);
-        if (delay <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death"))
+        shieldRenderer.material.color += new Color(Time.deltaTime * 0.04f, Time.deltaTime * 0.04f, Time.deltaTime * 0.04f);
+        if (delay <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death") && transform.parent.GetChild(0).GetComponent<Boss2>().shieldPhaseLaserDelay)
         {
             for (int x = 0; x < 4; x++)
             {

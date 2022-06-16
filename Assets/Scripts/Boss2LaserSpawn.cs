@@ -14,7 +14,7 @@ public class Boss2LaserSpawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && gameObject.GetComponent<Renderer>().material.color.a > 0.95f)
+        if (other.CompareTag("Player") && gameObject.GetComponent<Renderer>().material.color.a > 0.85f)
         {
             gameManager.playerStats.LoseLive();
             if (gameManager.playerStats.Lives < 0)
