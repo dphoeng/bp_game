@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class BossProjectileMain : ProjectileGeneral
 {
+    private Renderer projectileRenderer;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         speed = 8f;
+        projectileRenderer = transform.GetComponent<Renderer>();
         base.Start();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        transform.GetComponent<Renderer>().material.color = new Color(Wave(0), Wave(2), Wave(4));
+        projectileRenderer.material.color = new Color(Wave(0), Wave(2), Wave(4));
         base.Update();
     }
 

@@ -265,7 +265,11 @@ MonoBehaviour:
   fillBoss: {fileID: 0}
   activated: 0
   secondPhaseActivated: 0
+  shieldPhaseLaserDelay: 0
+  shieldPhaseShootDuration: 3
+  shieldPhaseShootInterval: 0.02
   shieldPhaseShootDelay: 0
+  explode: 0
 --- !u!1 &6310703197737921783
 GameObject:
   m_ObjectHideFlags: 0

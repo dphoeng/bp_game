@@ -19,7 +19,7 @@ public class Boss2 : EnemyGeneral
     private float delay2 = 0f;
     private float shootInterval3;
     private float delay3 = 0f;
-    private float regenLaserInterval = 0.075f;
+    private readonly float regenLaserInterval = 0.075f;
     private float regenLaserDelay = 0f;
     private int indexLaser = 0;
     private int indexPhaseEnd = 0;
@@ -27,11 +27,15 @@ public class Boss2 : EnemyGeneral
     public bool secondPhaseActivated = false;
     private bool lockedScreen = false;
     private bool noEnemies = false;
-    private bool secondPhase = false;
+    private bool shieldPhase = false;
     public bool shieldPhaseLaserDelay = false;
     public float shieldPhaseShootDuration = 3f;
     public float shieldPhaseShootInterval = 0.02f;
     public float shieldPhaseShootDelay = 0;
+    public bool explode = false;
+    private float shootIntervalCycle = 2.5f;
+    private float delayCycle = 0f;
+    private int indexMoveSet = 0;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -71,7 +75,8 @@ public class Boss2 : EnemyGeneral
             }
         } else
         {
-            if (!activated && !lockedScreen && !secondPhase && !secondPhaseActivated)
+            // code for blinding the screen (and reappearing)
+            if (!activated && !lockedScreen && !shieldPhase && !secondPhaseActivated)
             {
                 if (spawnManager.blinderScreen.GetComponent<Renderer>().material.color.a >= 1)
                 {
@@ -85,9 +90,10 @@ public class Boss2 : EnemyGeneral
                 }
 
             }
+            // code for first phase active
             if (activated)
             {
-                if (!secondPhase)
+                if (!shieldPhase)
                 {
                     if (!GameObject.FindGameObjectWithTag("Ring of Death"))
                     {
@@ -107,7 +113,7 @@ public class Boss2 : EnemyGeneral
                                 lastProjectile.transform.Translate(new Vector3(0.3f, 0, 0), Space.Self);
                                 lastProjectile = Instantiate(projectilePrefab[2], transform.position, transform.rotation * Quaternion.Euler(0, 25f, 0));
                                 lastProjectile.transform.Translate(new Vector3(-0.3f, 0, 0), Space.Self);
-                            }    
+                            }
                             delay = Time.time + shootInterval;
                         }
                         if (delay2 <= Time.time && hitpoints < 25)
@@ -124,7 +130,8 @@ public class Boss2 : EnemyGeneral
                     }
                 }
             }
-            if (secondPhase)
+            // code for shield phase
+            else if (shieldPhase && !explode)
             {
                 if (hitpoints < 75)
                 {
@@ -138,13 +145,39 @@ public class Boss2 : EnemyGeneral
                 }
                 else
                 {
-                    secondPhase = false;
-                    secondPhaseActivated = true;
-                    transform.root.GetChild(1).gameObject.SetActive(false);
                     hitpoints = 75;
-                    bossText.text = "Ror'Mir (Unleashed)";
+                    explode = true;
+                    Invoke(nameof(ActivateSecondPhase), 1f);
                 }
             }
+            // code for shooting in second phase
+            else if (secondPhaseActivated)
+            {
+                if (delayCycle <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death"))
+                {
+                    int res = Mathf.FloorToInt(gameManager.randomList[indexMoveSet] / (1000 / 4));
+                    indexMoveSet = gameManager.randomList.Count > indexMoveSet + 1 ? indexMoveSet + 1 : 0;
+                    switch (res)
+                    {
+                        case 0:
+                            VomitAttack();
+                            break;
+
+                        case 1:
+                            StartCoroutine(nameof(LaserAttack));
+                            break;
+
+                        case 2:
+                            break;
+
+                        case 3:
+                            break;
+
+                    }
+                    delayCycle = Time.time + shootIntervalCycle;
+                }
+            }    
+            // short delay before shield phase starts shooting
             if (shieldPhaseShootDuration >= Time.time)
 			{
                 if (shieldPhaseShootDelay <= Time.time && !GameObject.FindGameObjectWithTag("Ring of Death"))
@@ -168,6 +201,31 @@ public class Boss2 : EnemyGeneral
                 }
 			}
         }
+    }
+
+    private void VomitAttack()
+    {
+        shieldPhaseShootDuration = Time.time + 0.5f;
+    }
+
+    IEnumerator LaserAttack()
+    {
+        for (int laserCount = 0; laserCount < 10; laserCount++)
+        {
+            Debug.Log(laserCount);
+            if (player && !GameObject.FindGameObjectWithTag("Ring of Death"))
+                lastProjectile = Instantiate(projectilePrefab[3], player.transform.position, transform.rotation * Quaternion.Euler(0, laserCount * 20, 180));
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    private void ActivateSecondPhase()
+    {
+        shieldPhase = false;
+        secondPhaseActivated = true;
+        transform.root.GetChild(1).gameObject.SetActive(false);
+        transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+        bossText.text = "Ror'Mir (Unleashed)";
     }
 
     private void ActivateShieldPhaseShoot()
@@ -208,7 +266,7 @@ public class Boss2 : EnemyGeneral
         }
         else if (other.transform.CompareTag("Player Projectile"))
         {
-            if (!secondPhase)
+            if (!shieldPhase)
             {
                 TakeDamageSpecial(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
             }
@@ -217,7 +275,7 @@ public class Boss2 : EnemyGeneral
         // if hit by player laser, check if current position is inside field, check whether this object has already been hit by this laser already and check whether the alpha value of the laser is higher than 0.95 (fresh laser)
         else if (other.transform.CompareTag("Player Laser") && transform.position.z < 0 && lastLaserHit != other.gameObject.GetInstanceID() && other.gameObject.GetComponent<Renderer>().material.color.a > 0.95f)
         {
-            if (!secondPhase)
+            if (!shieldPhase)
                 TakeDamageSpecial(other.GetComponent<ProjectileGeneral>().damage, Time.frameCount);
         }
         maskBoss.fillAmount = hitpoints / startingHitpoints;
@@ -226,7 +284,7 @@ public class Boss2 : EnemyGeneral
     public void TakeDamageSpecial(float damage, int frame)
     {
         // taking damage for first phase
-        if (!secondPhase && !secondPhaseActivated)
+        if (!shieldPhase && !secondPhaseActivated)
         {
             if (frame != lastFrame)
             {
@@ -238,8 +296,9 @@ public class Boss2 : EnemyGeneral
                     hitpoints = 0;
                     transform.root.GetChild(1).gameObject.SetActive(true);
                     activated = false;
-                    secondPhase = true;
+                    shieldPhase = true;
                     bossText.text = "Ror'Mir (Recovering)";
+                    transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
                     Invoke(nameof(ActivateShieldPhaseShoot), 5);
                     shieldPhaseShootDuration += Time.time;
                 }

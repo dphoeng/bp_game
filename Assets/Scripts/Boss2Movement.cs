@@ -24,30 +24,38 @@ public class Boss2Movement : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (childObj.activated && player)
+        if (player)
         {
-            transform.rotation = player.transform.rotation * Quaternion.Euler(new Vector3(0, 0, 180));
-            transform.Translate(player.GetComponent<PlayerController>().speed * 0.6f * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal") * -1, 0, Input.GetAxisRaw("Vertical") * -1), Space.World);
-
-            // Border control
-            if (transform.position.z < -17.5f)
-                transform.position = new Vector3(transform.position.x, transform.position.y, -17.5f);
-            if (transform.position.z > -2.5f)
-                transform.position = new Vector3(transform.position.x, transform.position.y, -2.5f);
-            if (transform.position.x > 7.5f)
-                transform.position = new Vector3(7.5f, transform.position.y, transform.position.z);
-            if (transform.position.x < -7.5f)
-                transform.position = new Vector3(-7.5f, transform.position.y, transform.position.z);
-
-            if (touchedPlayer)
+            if (childObj.activated)
             {
-                if (touchedPlayerTime > Time.time)
+                transform.rotation = player.transform.rotation * Quaternion.Euler(new Vector3(0, 0, 180));
+                transform.Translate(player.GetComponent<PlayerController>().speed * 0.6f * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal") * -1, 0, Input.GetAxisRaw("Vertical") * -1), Space.World);
+
+                // Border control
+                if (transform.position.z < -17.5f)
+                    transform.position = new Vector3(transform.position.x, transform.position.y, -17.5f);
+                if (transform.position.z > -2.5f)
+                    transform.position = new Vector3(transform.position.x, transform.position.y, -2.5f);
+                if (transform.position.x > 7.5f)
+                    transform.position = new Vector3(7.5f, transform.position.y, transform.position.z);
+                if (transform.position.x < -7.5f)
+                    transform.position = new Vector3(-7.5f, transform.position.y, transform.position.z);
+
+                if (touchedPlayer)
                 {
-                    if (player)
-                        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, player.GetComponent<PlayerController>().speed * Time.deltaTime * -1 * 2);
+                    if (touchedPlayerTime > Time.time)
+                    {
+                        if (player)
+                            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, player.GetComponent<PlayerController>().speed * Time.deltaTime * -1 * 2);
+                    }
+                    else
+                        touchedPlayer = false;
                 }
-                else
-                    touchedPlayer = false;
+            } else if (childObj.secondPhaseActivated)
+            {
+                transform.LookAt(player.transform);
+                transform.Rotate(new Vector3(0, 0, 180));
+                transform.position += 2.5f * Time.deltaTime * transform.forward;
             }
         }
     }

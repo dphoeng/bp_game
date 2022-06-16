@@ -4154,8 +4154,8 @@ MonoBehaviour:
   - {fileID: 3851346786815494072, guid: 42b749eb9918a984eacdcd0663409c0b, type: 3}
   - {fileID: 4670528398878994321, guid: af6a21ea597229145acc4870da128005, type: 3}
   bossPrefabs:
-  - {fileID: 7256084416774972980, guid: ad29dfc34ec16f141b9ebce417acf998, type: 3}
   - {fileID: 6310703197737921783, guid: ff3fbfe299e2a8b45a1ad4a69d342245, type: 3}
+  - {fileID: 7256084416774972980, guid: ad29dfc34ec16f141b9ebce417acf998, type: 3}
   bossScreen: {fileID: 1201885490}
   blinderScreen: {fileID: 128935710}
   bossText: {fileID: 782685872}

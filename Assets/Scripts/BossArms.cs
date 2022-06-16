@@ -8,6 +8,7 @@ public class BossArms : EnemyGeneral
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
     private Color materialColor;
+    private Renderer armRenderer;
     private bool isQuitting;
 
     // Start is called before the first frame update
@@ -23,7 +24,8 @@ public class BossArms : EnemyGeneral
         rotation = new Vector3(0, 0, 0);
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
-        materialColor = transform.GetComponent<Renderer>().material.color;
+        armRenderer = transform.GetComponent<Renderer>();
+        materialColor = armRenderer.material.color;
         base.Start();
     }
 
@@ -34,7 +36,7 @@ public class BossArms : EnemyGeneral
         if (delay <= Time.time && transform.parent.transform.position.z <= -5 && !GameObject.FindGameObjectWithTag("Ring of Death"))
         {
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-            projectile.GetComponent<Renderer>().material.SetColor("_Color", transform.GetComponent<Renderer>().material.color);
+            projectile.GetComponent<Renderer>().material.SetColor("_Color", armRenderer.material.color);
             delay = Time.time + shootInterval;
         }
         base.Update();

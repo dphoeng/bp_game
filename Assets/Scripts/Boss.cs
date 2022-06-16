@@ -10,11 +10,11 @@ public class Boss : EnemyGeneral
     public GameObject assignedExperiencePrefab;
     public GameObject assignedBombPrefab;
     public GameObject targetMarkerPrefab;
-    public GameObject projectile2Prefab;
     public GameObject projectileMainPrefab;
     public TextMeshProUGUI bossText;
     public Image maskBoss;
     public Image fillBoss;
+    private Renderer bossRenderer;
     private float moveInterval;
     private float moveDelay;
     private float moveSpeed;
@@ -37,7 +37,7 @@ public class Boss : EnemyGeneral
     protected override void Start()
     {
         ColorChildren();
-        hitpoints = startingHitpoints = 75f;
+        hitpoints = startingHitpoints = 50f;
         moveInterval = 4f;
         moveDelay = 0f;
         speed = 1.5f;
@@ -52,6 +52,7 @@ public class Boss : EnemyGeneral
         rotation = new Vector3(0, 0.5f, 0);
         bombPrefab = assignedBombPrefab;
         experiencePrefab = assignedExperiencePrefab;
+        bossRenderer = GetComponent<Renderer>();
         base.Start();
 
         bossText = spawnManager.bossText;
@@ -123,8 +124,8 @@ public class Boss : EnemyGeneral
                     {
                         if (delay2 < Time.time && !inBreak)
                         {
-                            GameObject shot = Instantiate(projectile2Prefab, transform.position, transform.rotation);
-                            shot.GetComponent<Renderer>().material.color = transform.GetComponent<Renderer>().material.color;
+                            GameObject shot = Instantiate(projectilePrefab, transform.position, transform.rotation);
+                            shot.GetComponent<Renderer>().material.color = bossRenderer.material.color;
                             delay2 = Time.time + interval2;
                         }
                     }
@@ -162,9 +163,9 @@ public class Boss : EnemyGeneral
             }
             base.Update();
         }
-        transform.GetComponent<Renderer>().material.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
+        bossRenderer.material.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
         bossText.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
-        fillBoss.GetComponent<Image>().color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
+        fillBoss.color = new Color(Wave(1.5f, Time.time, 0), Wave(1.5f, Time.time, 2), Wave(1.5f, Time.time, 4));
     }
 
     protected override void OnTriggerEnter(Collider other)
